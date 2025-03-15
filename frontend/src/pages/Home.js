@@ -1994,10 +1994,11 @@ const styles = {
     alignItems: 'center',
     gap: '2rem',
     marginBottom: '2rem',
+    flexWrap: 'wrap', // Allow wrapping on smaller screens
     '@media (max-width: 768px)': {
-      flexDirection: 'column',
       gap: '1rem',
-      alignItems: 'center',
+      justifyContent: 'center', // Center items on mobile
+      flexDirection: 'row', // Keep horizontal layout
     }
   },
   adScholarshipBox: {
@@ -2007,9 +2008,14 @@ const styles = {
     width: '200px',
     transition: 'all 0.3s ease',
     '@media (max-width: 768px)': {
-      width: '80%',
-      maxWidth: '300px',
-      margin: '0 auto'
+      width: '160px', // Smaller width on mobile
+      padding: '1rem',
+      margin: '0', // Remove margin
+      flexShrink: 0, // Prevent shrinking
+    },
+    '@media (max-width: 480px)': {
+      width: '140px', // Even smaller on very small screens
+      padding: '0.8rem',
     }
   },
   adScholarshipTitle: {
@@ -2028,7 +2034,10 @@ const styles = {
     display: 'inline-block',
     transformOrigin: 'center center',
     '@media (max-width: 768px)': {
-      fontSize: '2.2rem',
+      fontSize: '1.8rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.5rem',
     }
   },
   adScholarshipLabel: {
@@ -2036,7 +2045,10 @@ const styles = {
     fontSize: '1.5rem',
     fontWeight: 'bold',
     '@media (max-width: 768px)': {
-      fontSize: '1.3rem',
+      fontSize: '1.2rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1rem',
     }
   },
   adExamBox: {
@@ -2048,9 +2060,14 @@ const styles = {
     transition: 'all 0.3s ease',
     boxShadow: '0 8px 20px rgba(255, 0, 0, 0.2)',
     '@media (max-width: 768px)': {
-      width: '80%',
-      maxWidth: '300px',
-      margin: '0 auto'  // Center the box
+      width: '160px', // Smaller width on mobile
+      padding: '1rem',
+      margin: '0', // Remove margin
+      flexShrink: 0, // Prevent shrinking
+    },
+    '@media (max-width: 480px)': {
+      width: '140px', // Even smaller on very small screens
+      padding: '0.8rem',
     }
   },
   adExamLabel: {
@@ -2068,21 +2085,22 @@ const styles = {
     fontWeight: 'bold',
     marginBottom: '0.5rem',
     '@media (max-width: 768px)': {
-      fontSize: '1.8rem',
+      fontSize: '1.5rem',
+      marginBottom: '0.3rem',
     },
     '@media (max-width: 480px)': {
-      fontSize: '1.6rem',
-    },
+      fontSize: '1.3rem',
+    }
   },
   adExamDay: {
     fontSize: '2.5rem',
     fontWeight: 'bold',
     '@media (max-width: 768px)': {
-      fontSize: '2.2rem',
+      fontSize: '1.8rem',
     },
     '@media (max-width: 480px)': {
-      fontSize: '2rem',
-    },
+      fontSize: '1.5rem',
+    }
   },
   adHeaderContainer: {
     textAlign: 'center',
