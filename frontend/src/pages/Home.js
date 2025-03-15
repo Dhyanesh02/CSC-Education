@@ -29,8 +29,7 @@ const Home = () => {
     const fetchCourses = async () => {
       try {
         setLoading(true);
-        // Replace localhost URL with environment variable
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/courses`);
+        const response = await axios.get('http://localhost:5000/api/courses');
         setCourses(response.data);
         setLoading(false);
       } catch (error) {
