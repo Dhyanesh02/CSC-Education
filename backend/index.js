@@ -12,8 +12,11 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: [process.env.CLIENT_URL,"https://csc-education.vercel.app/"],
+  origin: ['https://csc-education.vercel.app', process.env.CLIENT_URL],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
+  optionsSuccessStatus: 200
 }));
 
 // Create uploads directory if it doesn't exist
