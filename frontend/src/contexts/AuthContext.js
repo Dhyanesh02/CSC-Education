@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/admin';
+import axios from 'axios';
 
 const AuthContext = createContext();
 
@@ -51,12 +52,26 @@ export function AuthProvider({ children }) {
   // Login function
   const login = async (email, password) => {
     try {
-      const { data } = await api.post('/login', { email, password });
-      localStorage.setItem('adminToken', data.token);
-      setAdmin({ token: data.token });
-      navigate(process.env.REACT_APP_ADMIN_DASHBOARD_URL);
+      const response = await axios.post(
+        'https://csc-education-server.vercel.app/api/admin/login',
+        { email, password },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          withCredentials: true
+        }
+      );
+
+      if (response.data.token) {
+        localStorage.setItem('adminToken', response.data.token);
+        setAdmin({ token: response.data.token });
+        navigate(process.env.REACT_APP_ADMIN_DASHBOARD_URL);
+      }
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Login failed');
+      console.error('Login error:', error);
+      throw error;
     }
   };
 
