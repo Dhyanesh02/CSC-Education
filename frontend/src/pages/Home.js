@@ -1229,6 +1229,17 @@ const styles = {
     padding: '2.5rem 1rem',
     width: '100%',
     boxSizing: 'border-box',
+    flexWrap: 'wrap', // Add this to allow wrapping on smaller screens
+    '@media (max-width: 768px)': {
+      gap: '2rem',
+      padding: '2rem 1rem',
+      flexDirection: 'column', // Stack items vertically on mobile
+      alignItems: 'center', // Center items horizontally
+    },
+    '@media (max-width: 480px)': {
+      padding: '1.5rem 0.5rem',
+      gap: '1.5rem',
+    }
   },
   statItem: {
     textAlign: 'center',
@@ -1236,18 +1247,46 @@ const styles = {
     minWidth: '120px',
     perspective: '1000px',
     transformStyle: 'preserve-3d',
+    '@media (max-width: 768px)': {
+      width: '100%', // Full width on mobile
+      maxWidth: '250px', // Limit maximum width
+      padding: '1rem',
+      backgroundColor: 'rgba(255, 255, 255, 0.05)', // Add subtle background
+      borderRadius: '12px', // Add rounded corners
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add subtle shadow
+    }
   },
   statIcon: {
     fontSize: '3rem',
     marginBottom: '0.8rem',
+    '@media (max-width: 768px)': {
+      fontSize: '2.5rem',
+      marginBottom: '0.6rem'
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '2rem',
+      marginBottom: '0.4rem'
+    }
   },
   statCount: {
     fontSize: '1.8rem',
     fontWeight: 'bold',
     color: '#ffde59',
+    '@media (max-width: 768px)': {
+      fontSize: '1.6rem'
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.4rem'
+    }
   },
   statLabel: {
     fontSize: '1rem',
+    '@media (max-width: 768px)': {
+      fontSize: '0.9rem'
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '0.85rem'
+    }
   },
   coursesSection: {
     padding: '6rem 2rem 4rem',
@@ -1705,13 +1744,9 @@ const styles = {
     gap: '2rem',
     marginBottom: '3rem',
     '@media (max-width: 1024px)': {
-      gridTemplateColumns: '1fr', // Single column on tablet
+      gridTemplateColumns: '1fr', // Single column on tablet and below
       gap: '1.5rem',
-    },
-    '@media (max-width: 768px)': {
-      gridTemplateColumns: '1fr', // Single column on mobile
-      gap: '1rem',
-    },
+    }
   },
   aboutInfoSection: {
     backgroundColor: 'white',
@@ -1722,61 +1757,50 @@ const styles = {
     border: '1px solid rgba(0, 0, 0, 0.05)',
     width: '100%',
     boxSizing: 'border-box',
-    margin: '0',
-    '&:hover': {
-      transform: 'translateY(-5px)',
+    margin: '0 auto', // Center the cards
+    '@media (max-width: 1024px)': {
+      maxWidth: '600px', // Maximum width on mobile
+      padding: '1.5rem',
     },
-    '@media (max-width: 768px)': {
+    '@media (max-width: 480px)': {
       padding: '1.25rem',
-      transform: 'none',
-      '&:hover': {
-        transform: 'none',
-      },
-      marginBottom: '1rem', // Add spacing between cards
-      width: '100%',
-    },
+      margin: '0.75rem auto',
+    }
   },
   aboutIconSection: {
     display: 'flex',
     alignItems: 'center',
     gap: '1rem',
     marginBottom: '1rem',
-    '@media (max-width: 768px)': {
+    '@media (max-width: 480px)': {
       gap: '0.75rem',
-      marginBottom: '0.75rem',
-    },
+      marginBottom: '0.75rem'
+    }
   },
   aboutIcon: {
     fontSize: '2.5rem',
     color: '#1e3a8a',
-    '@media (max-width: 768px)': {
-      fontSize: '2rem',
-    },
     '@media (max-width: 480px)': {
-      fontSize: '1.75rem',
-    },
+      fontSize: '2rem'
+    }
   },
   aboutSectionTitle: {
     fontSize: '1.5rem',
     color: '#1e3a8a',
     fontWeight: 'bold',
     margin: 0,
-    '@media (max-width: 768px)': {
-      fontSize: '1.3rem',
-    },
     '@media (max-width: 480px)': {
-      fontSize: '1.2rem',
-    },
+      fontSize: '1.25rem'
+    }
   },
   aboutText: {
     fontSize: '1rem',
     color: '#555',
     lineHeight: '1.6',
-    margin: 0,
-    '@media (max-width: 768px)': {
-      fontSize: '0.95rem',
-      lineHeight: '1.5',
-    },
+    '@media (max-width: 480px)': {
+      fontSize: '0.9rem',
+      lineHeight: '1.5'
+    }
   },
   whyChooseSection: {
     marginTop: '2rem',
@@ -1792,21 +1816,23 @@ const styles = {
     marginBottom: '2rem',
     '@media (max-width: 768px)': {
       fontSize: '1.75rem',
-      marginBottom: '1.5rem',
+      marginBottom: '1.5rem'
     },
+    '@media (max-width: 480px)': {
+      fontSize: '1.5rem',
+      marginBottom: '1.25rem'
+    }
   },
   whyChooseGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(4, 1fr)',
     gap: '1.5rem',
     '@media (max-width: 1024px)': {
-      gridTemplateColumns: '1fr', // Changed to single column on tablet
-      gap: '1.25rem',
-    },
-    '@media (max-width: 768px)': {
-      gridTemplateColumns: '1fr', // Single column on mobile
+      gridTemplateColumns: '1fr', // Single column on tablet and below
       gap: '1rem',
-    },
+      maxWidth: '600px', // Maximum width on mobile
+      margin: '0 auto', // Center the grid
+    }
   },
   whyChooseCard: {
     backgroundColor: 'white',
@@ -1818,20 +1844,14 @@ const styles = {
     border: '1px solid rgba(0, 0, 0, 0.05)',
     width: '100%',
     boxSizing: 'border-box',
-    '&:hover': {
-      transform: 'translateY(-5px)',
-    },
     '@media (max-width: 1024px)': {
-      marginBottom: '1rem', // Add spacing between cards on tablet
-    },
-    '@media (max-width: 768px)': {
+      maxWidth: '600px', // Maximum width on mobile
+      margin: '0 auto', // Center the cards
       padding: '1.25rem',
-      transform: 'none',
-      '&:hover': {
-        transform: 'none',
-      },
-      marginBottom: '1rem', // Maintain spacing between cards on mobile
     },
+    '@media (max-width: 480px)': {
+      padding: '1rem',
+    }
   },
   whyChooseIcon: {
     fontSize: '2.5rem',
@@ -1867,21 +1887,16 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     gap: '0.5rem',
-    width: '100%',
-    '@media (max-width: 768px)': {
-      gap: '0.4rem',
-    },
+    '@media (max-width: 480px)': {
+      gap: '0.375rem'
+    }
   },
   ratingStars: {
     color: '#ffde59',
-    fontSize: '2rem',
-    textShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    '@media (max-width: 768px)': {
-      fontSize: '1.75rem',
-    },
+    fontSize: '1.5rem',
     '@media (max-width: 480px)': {
-      fontSize: '1.5rem',
-    },
+      fontSize: '1.25rem'
+    }
   },
   ratingBox: {
     backgroundColor: '#1e3a8a',
@@ -1893,17 +1908,23 @@ const styles = {
     gap: '0.5rem',
     justifyContent: 'center',
     width: 'fit-content',
-    '@media (max-width: 768px)': {
-      padding: '0.4rem 0.8rem',
-    },
+    '@media (max-width: 480px)': {
+      padding: '0.375rem 0.75rem',
+      gap: '0.375rem'
+    }
   },
   ratingScore: {
     fontSize: '1.2rem',
     fontWeight: 'bold',
+    '@media (max-width: 480px)': {
+      fontSize: '1.1rem'
+    }
   },
   ratingCount: {
-    fontSize: '1rem',
-    opacity: 0.9,
+    fontSize: '0.9rem',
+    '@media (max-width: 480px)': {
+      fontSize: '0.8rem'
+    }
   },
   certificationBadge: {
     display: 'inline-block',
