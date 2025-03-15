@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
+import config from '../config/config.js';
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -29,7 +30,7 @@ const Home = () => {
     const fetchCourses = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5000/api/courses');
+        const response = await axios.get(`${config.apiUrl}/courses`);
         setCourses(response.data);
         setLoading(false);
       } catch (error) {
