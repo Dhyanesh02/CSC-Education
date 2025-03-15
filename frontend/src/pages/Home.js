@@ -1799,7 +1799,7 @@ const styles = {
     gridTemplateColumns: 'repeat(4, 1fr)',
     gap: '1.5rem',
     '@media (max-width: 1024px)': {
-      gridTemplateColumns: 'repeat(2, 1fr)',
+      gridTemplateColumns: '1fr', // Changed to single column on tablet
       gap: '1.25rem',
     },
     '@media (max-width: 768px)': {
@@ -1820,13 +1820,16 @@ const styles = {
     '&:hover': {
       transform: 'translateY(-5px)',
     },
+    '@media (max-width: 1024px)': {
+      marginBottom: '1rem', // Add spacing between cards on tablet
+    },
     '@media (max-width: 768px)': {
       padding: '1.25rem',
       transform: 'none',
       '&:hover': {
         transform: 'none',
       },
-      marginBottom: '1rem', // Add spacing between cards
+      marginBottom: '1rem', // Maintain spacing between cards on mobile
     },
   },
   whyChooseIcon: {
@@ -1970,39 +1973,22 @@ const styles = {
     gap: '2rem',
     marginBottom: '2rem',
     flexWrap: 'wrap',
-    '@media (max-width: 1024px)': {
-      gap: '1.5rem',
-    },
     '@media (max-width: 768px)': {
+      flexDirection: 'column',  // Changed to column layout for mobile
       gap: '1rem',
-      marginBottom: '1.5rem',
-    },
-    '@media (max-width: 480px)': {
-      flexDirection: 'column',
-      gap: '1rem',
-    },
+      alignItems: 'center',    // Center items
+    }
   },
   adScholarshipBox: {
     backgroundColor: '#ffde59',
     padding: '1.5rem',
     borderRadius: '10px',
-    minWidth: '200px',
-    transformOrigin: 'center center',
-    cursor: 'pointer',
+    width: '200px',           // Fixed width instead of minWidth
     transition: 'all 0.3s ease',
-    '@media (max-width: 1024px)': {
-      minWidth: '180px',
-      padding: '1.2rem',
-    },
     '@media (max-width: 768px)': {
-      minWidth: '150px',
-      padding: '1rem',
-    },
-    '@media (max-width: 480px)': {
-      width: '100%',
-      maxWidth: '280px',
-      margin: '0 auto',
-    },
+      width: '80%',           // Responsive width for mobile
+      maxWidth: '300px',      // Maximum width on mobile
+    }
   },
   adScholarshipTitle: {
     color: '#1e3a8a',
@@ -2044,25 +2030,14 @@ const styles = {
     backgroundColor: '#ff0000',
     padding: '1.5rem',
     borderRadius: '10px',
-    minWidth: '200px',
+    width: '200px',           // Fixed width instead of minWidth
     color: 'white',
-    transformOrigin: 'center center',
-    cursor: 'pointer',
     transition: 'all 0.3s ease',
     boxShadow: '0 8px 20px rgba(255, 0, 0, 0.2)',
-    '@media (max-width: 1024px)': {
-      minWidth: '180px',
-      padding: '1.2rem',
-    },
     '@media (max-width: 768px)': {
-      minWidth: '150px',
-      padding: '1rem',
-    },
-    '@media (max-width: 480px)': {
-      width: '100%',
-      maxWidth: '280px',
-      margin: '0 auto',
-    },
+      width: '80%',           // Responsive width for mobile
+      maxWidth: '300px',      // Maximum width on mobile
+    }
   },
   adExamLabel: {
     fontSize: '1.2rem',
