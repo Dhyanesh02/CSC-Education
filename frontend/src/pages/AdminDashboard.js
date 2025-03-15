@@ -31,7 +31,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/courses');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/courses`);
         if (response.status === 200) {
           const topics = response.data.map(course => course.mainTopic);
           setAvailableTopics(topics);
@@ -103,12 +103,16 @@ const AdminDashboard = () => {
     formData.append('curriculum', JSON.stringify(curriculum));
 
     try {
-      const response = await axios.post('http://localhost:5000/api/admin/courses/create', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
-        },
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/admin/courses/create`, 
+        formData, 
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
+          },
+        }
+      );
 
       if (response.status === 201) {
         toast.success('Course created successfully! 🎉', {
@@ -145,7 +149,7 @@ const AdminDashboard = () => {
 
   const fetchCourseData = async (topic) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/courses`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/courses`);
       if (response.status === 200) {
         const course = response.data.find(c => c.mainTopic === topic);
         if (course) {
@@ -168,12 +172,16 @@ const AdminDashboard = () => {
     if (updateImage) formData.append('image', updateImage);
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/admin/courses/update/${updateMainTopic}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
-        },
-      });
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/admin/courses/update/${updateMainTopic}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
+          },
+        }
+      );
 
       if (response.status === 200) {
         toast.success('Course updated successfully! 🚀', {
@@ -210,11 +218,14 @@ const AdminDashboard = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(`http://localhost:5000/api/admin/courses/delete/${deleteMainTopic}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
-        },
-      });
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/admin/courses/delete/${deleteMainTopic}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
+          },
+        }
+      );
 
       if (response.status === 200) {
         toast.success('Course deleted successfully! 🗑️', {
