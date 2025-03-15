@@ -1962,7 +1962,7 @@ const styles = {
     },
     '@media (max-width: 480px)': {
       padding: '1rem 0.5rem',
-    },
+    }
   },
   adContainer: {
     maxWidth: '1200px',
@@ -1982,7 +1982,7 @@ const styles = {
       padding: '1rem',
       borderRadius: '12px',
       border: '3px solid #ffde59',
-    },
+    }
   },
   adContent: {
     width: '100%',
@@ -1998,7 +1998,6 @@ const styles = {
       flexDirection: 'column',
       gap: '1rem',
       alignItems: 'center',
-      width: '100%'  // Added to ensure full width
     }
   },
   adScholarshipBox: {
@@ -2010,7 +2009,7 @@ const styles = {
     '@media (max-width: 768px)': {
       width: '80%',
       maxWidth: '300px',
-      margin: '0 auto'  // Center the box
+      margin: '0 auto'
     }
   },
   adScholarshipTitle: {
@@ -2019,10 +2018,7 @@ const styles = {
     margin: '0 0 0.5rem 0',
     '@media (max-width: 768px)': {
       fontSize: '1.1rem',
-    },
-    '@media (max-width: 480px)': {
-      fontSize: '1rem',
-    },
+    }
   },
   adScholarshipAmount: {
     color: '#ff0000',
@@ -2033,10 +2029,7 @@ const styles = {
     transformOrigin: 'center center',
     '@media (max-width: 768px)': {
       fontSize: '2.2rem',
-    },
-    '@media (max-width: 480px)': {
-      fontSize: '2rem',
-    },
+    }
   },
   adScholarshipLabel: {
     color: '#1e3a8a',
@@ -2044,10 +2037,7 @@ const styles = {
     fontWeight: 'bold',
     '@media (max-width: 768px)': {
       fontSize: '1.3rem',
-    },
-    '@media (max-width: 480px)': {
-      fontSize: '1.2rem',
-    },
+    }
   },
   adExamBox: {
     backgroundColor: '#ff0000',
