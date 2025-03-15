@@ -1634,10 +1634,10 @@ const styles = {
     width: '100%',
     boxSizing: 'border-box',
     '@media (max-width: 768px)': {
-      padding: '1.5rem 0.8rem',
+      padding: '1.5rem 1rem',
     },
     '@media (max-width: 480px)': {
-      padding: '1rem 0.5rem',
+      padding: '1rem',
     },
   },
   aboutHeader: {
@@ -1686,19 +1686,16 @@ const styles = {
     },
   },
   aboutContent: {
-    backgroundColor: 'white',
+    backgroundColor: 'transparent', // Change to transparent
     borderRadius: '15px',
-    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.06)',
-    padding: '2rem',
+    padding: '1rem',
     width: '100%',
     boxSizing: 'border-box',
     '@media (max-width: 768px)': {
-      padding: '1.5rem',
-      borderRadius: '12px',
+      padding: '0.5rem',
     },
     '@media (max-width: 480px)': {
-      padding: '1rem',
-      borderRadius: '10px',
+      padding: '0.25rem',
     },
   },
   aboutGrid: {
@@ -1707,17 +1704,12 @@ const styles = {
     gap: '2rem',
     marginBottom: '3rem',
     '@media (max-width: 1024px)': {
-      gridTemplateColumns: '1fr', // Changed to single column
+      gridTemplateColumns: '1fr', // Single column on tablet
       gap: '1.5rem',
     },
     '@media (max-width: 768px)': {
-      gridTemplateColumns: '1fr',
-      gap: '1.5rem',
-      marginBottom: '2rem',
-    },
-    '@media (max-width: 480px)': {
-      gap: '1.25rem',
-      marginBottom: '1.5rem',
+      gridTemplateColumns: '1fr', // Single column on mobile
+      gap: '1rem',
     },
   },
   aboutInfoSection: {
@@ -1727,51 +1719,30 @@ const styles = {
     boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)',
     transition: 'all 0.3s ease',
     border: '1px solid rgba(0, 0, 0, 0.05)',
-    width: '100%', // Added to ensure full width
-    maxWidth: '100%', // Added to prevent overflow
-    margin: '0 auto', // Center the cards
+    width: '100%',
+    boxSizing: 'border-box',
+    margin: '0',
     '&:hover': {
       transform: 'translateY(-5px)',
     },
-    '&:hover:nth-child(1)': {
-      background: 'linear-gradient(135deg, #ffffff 0%, #e8f0ff 100%)',
-      borderColor: 'rgba(30, 58, 138, 0.2)',
-    },
-    '&:hover:nth-child(2)': {
-      background: 'linear-gradient(135deg, #ffffff 0%, #fff0e5 100%)',
-      borderColor: 'rgba(255, 149, 0, 0.2)',
-    },
-    '&:hover:nth-child(3)': {
-      background: 'linear-gradient(135deg, #ffffff 0%, #fff9e6 100%)',
-      borderColor: 'rgba(255, 222, 89, 0.2)',
-    },
-    '&:hover:nth-child(4)': {
-      background: 'linear-gradient(135deg, #ffffff 0%, #e5fff2 100%)',
-      borderColor: 'rgba(34, 197, 94, 0.2)',
-    },
-    '@media (max-width: 1024px)': {
-      padding: '1.75rem',
-      '&:hover': {
-        transform: 'translateY(-3px)',
-      },
-    },
     '@media (max-width: 768px)': {
-      padding: '1.5rem',
-      marginBottom: '0', // Remove bottom margin as gap handles spacing
-    },
-    '@media (max-width: 480px)': {
       padding: '1.25rem',
-      borderRadius: '10px',
+      transform: 'none',
+      '&:hover': {
+        transform: 'none',
+      },
+      marginBottom: '1rem', // Add spacing between cards
+      width: '100%',
     },
   },
   aboutIconSection: {
     display: 'flex',
     alignItems: 'center',
     gap: '1rem',
-    marginBottom: '1.25rem',
+    marginBottom: '1rem',
     '@media (max-width: 768px)': {
       gap: '0.75rem',
-      marginBottom: '1rem',
+      marginBottom: '0.75rem',
     },
   },
   aboutIcon: {
@@ -1807,9 +1778,10 @@ const styles = {
     },
   },
   whyChooseSection: {
-    marginTop: '3rem',
+    marginTop: '2rem',
+    width: '100%',
     '@media (max-width: 768px)': {
-      marginTop: '2rem',
+      marginTop: '1.5rem',
     },
   },
   whyChooseTitle: {
@@ -1828,10 +1800,10 @@ const styles = {
     gap: '1.5rem',
     '@media (max-width: 1024px)': {
       gridTemplateColumns: 'repeat(2, 1fr)',
-      gap: '1rem',
+      gap: '1.25rem',
     },
-    '@media (max-width: 480px)': {
-      gridTemplateColumns: '1fr',
+    '@media (max-width: 768px)': {
+      gridTemplateColumns: '1fr', // Single column on mobile
       gap: '1rem',
     },
   },
@@ -1843,34 +1815,18 @@ const styles = {
     textAlign: 'center',
     transition: 'all 0.3s ease',
     border: '1px solid rgba(0, 0, 0, 0.05)',
+    width: '100%',
+    boxSizing: 'border-box',
     '&:hover': {
       transform: 'translateY(-5px)',
     },
-    '&:hover:nth-child(1)': {
-      background: 'linear-gradient(135deg, #ffffff 0%, #ffedeb 100%)',
-      borderColor: 'rgba(239, 68, 68, 0.2)',
-    },
-    '&:hover:nth-child(2)': {
-      background: 'linear-gradient(135deg, #ffffff 0%, #edf7ff 100%)',
-      borderColor: 'rgba(59, 130, 246, 0.2)',
-    },
-    '&:hover:nth-child(3)': {
-      background: 'linear-gradient(135deg, #ffffff 0%, #f3e8ff 100%)',
-      borderColor: 'rgba(168, 85, 247, 0.2)',
-    },
-    '&:hover:nth-child(4)': {
-      background: 'linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%)',
-      borderColor: 'rgba(16, 185, 129, 0.2)',
-    },
     '@media (max-width: 768px)': {
       padding: '1.25rem',
+      transform: 'none',
       '&:hover': {
-        transform: 'translateY(-3px)',
+        transform: 'none',
       },
-    },
-    '@media (max-width: 480px)': {
-      padding: '1.25rem',
-      marginBottom: '0.5rem',
+      marginBottom: '1rem', // Add spacing between cards
     },
   },
   whyChooseIcon: {
@@ -1906,11 +1862,10 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: '0.75rem',
-    padding: '0.5rem',
-    transition: 'all 0.3s ease',
+    gap: '0.5rem',
+    width: '100%',
     '@media (max-width: 768px)': {
-      gap: '0.5rem',
+      gap: '0.4rem',
     },
   },
   ratingStars: {
@@ -1929,10 +1884,11 @@ const styles = {
     color: 'white',
     padding: '0.5rem 1rem',
     borderRadius: '8px',
-    display: 'inline-flex',
+    display: 'flex',
     alignItems: 'center',
     gap: '0.5rem',
-    transition: 'all 0.3s ease',
+    justifyContent: 'center',
+    width: 'fit-content',
     '@media (max-width: 768px)': {
       padding: '0.4rem 0.8rem',
     },

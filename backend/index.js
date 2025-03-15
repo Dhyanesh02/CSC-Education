@@ -6,6 +6,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const path = require('path');
 const fs = require('fs');
+const { error } = require('console');
 const app = express();
 
 // Middleware
@@ -27,6 +28,13 @@ connectDB();
 // Routes
 app.use('/api/admin', adminRoutes);
 app.use('/api', courseRoutes);
+
+app.get('/', (req, res) => {
+  res.send({
+    activeStatus: true,
+    error: false,
+  })
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
