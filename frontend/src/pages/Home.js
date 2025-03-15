@@ -1,0 +1,2512 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const Home = () => {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeSection, setActiveSection] = useState('home');
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+  
+  const contactInfo = {
+    email: 'csc.sureshbaskaran@gmail.com',
+    phone: '+91 99427 25757',
+  };
+  const stats = [
+      { icon: "👨‍🎓", count: "5K+", label: "Students taught" },
+    { icon: "📋", count: "50+", label: "Institutions" },
+    { icon: "📚", count: "20+", label: "Courses" },
+  ];
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('http://localhost:5000/api/courses');
+        setCourses(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+        setError('Failed to load courses. Please try again later.');
+        setLoading(false);
+      }
+    };
+    fetchCourses();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleNavClick = (section) => {
+    setActiveSection(section);
+    setSelectedCourse(null);
+    setMobileMenuOpen(false); // Close mobile menu after navigation
+    // Add this line to scroll to top when changing sections
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCourseClick = (course) => {
+    setSelectedCourse(course);
+    // Add this line to scroll to top when a course is clicked
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBackClick = () => {
+    setSelectedCourse(null);
+  };
+
+  const handleEnrollClick = (googleFormLink) => {
+    window.open(googleFormLink, '_blank');
+  };
+
+  const sampleCourses = [
+    {
+      _id: "67ce70fb7dff90ffdabe0c22",
+      mainTopic: "Python",
+      imageUrl: "https://res.cloudinary.com/dswrqtwpz/image/upload/v1741582587/csc-web…",
+      about: "Its good",
+      googleFormLink: "https://forms.gle/xebX8pd6eeDuDFAt6ss",
+      curriculum: [{ subtopic: "Basics", content: "Learn Python fundamentals" }],
+    },
+    {
+      _id: "67ce99ad541dc38023f2f92a",
+      mainTopic: "Java",
+      imageUrl: "https://res.cloudinary.com/dswrqtwpz/image/upload/v1741593005/csc-web…",
+      about: "java",
+      googleFormLink: "https://forms.gle/xebX8pd6eeDuDFAt6ss",
+      curriculum: [{ subtopic: "OOPS", content: "oops: oops" }],
+    },
+  ];
+
+  const displayCourses = courses.length > 0 ? courses : sampleCourses;
+
+  const renderFeatureCard = () => (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      style={styles.featureCardContainer}
+    >
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        style={styles.backButton}
+        onClick={handleBackClick}
+      >
+        ← Back
+      </motion.button>
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        style={styles.featureCard}
+      >
+        <div style={styles.featureImageWrapper}>
+          <img
+            src={selectedCourse.imageUrl || `https://via.placeholder.com/800x400?text=${selectedCourse.mainTopic}`}
+            alt={selectedCourse.mainTopic}
+            style={styles.featureImage}
+            onError={(e) => { e.target.src = `https://via.placeholder.com/800x400?text=${selectedCourse.mainTopic}`; }}
+          />
+        </div>
+        <motion.div
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          style={styles.featureContent}
+        >
+          <h2 style={styles.featureTitle}>{selectedCourse.mainTopic}</h2>
+          <p style={styles.featureText}>{selectedCourse.about}</p>
+          <h3 style={styles.featureSectionTitle}>Curriculum</h3>
+          {selectedCourse.curriculum && selectedCourse.curriculum.length > 0 ? (
+            <ul style={styles.featureList}>
+              {selectedCourse.curriculum.map((item, index) => (
+                <li key={index} style={styles.featureListItem}>
+                  <strong style={styles.subtopic}>{item.subtopic}:</strong> <span style={styles.content}>{item.content}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No curriculum available yet.</p>
+          )}
+          <motion.button
+            whileHover={{
+              scale: 1.02,
+              backgroundColor: '#ffde59',
+              boxShadow: '0 5px 15px rgba(255, 222, 89, 0.4)'
+            }}
+            whileTap={{ scale: 0.98 }}
+            style={styles.enrollButton}
+            onClick={() => handleEnrollClick(selectedCourse.googleFormLink)}
+          >
+            Enroll Now
+          </motion.button>
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
+
+  const renderHome = () => (
+    <>
+      <div style={styles.hero}>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={styles.title}
+        >
+          "Master technology, shape your <span style={styles.highlight}>future.</span>"
+        </motion.h1>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          style={styles.subtitle}
+        >
+          "Learn, <span style={styles.highlight}>Innovate</span>, Excel <span style={styles.highlight}>digitally.</span>"
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          style={styles.quote}
+        >
+          "Empower your future with essential computer skills—learn, grow, and excel in the digital world."
+        </motion.p>
+        <motion.button
+          whileHover={{ 
+            scale: 1.02,
+            backgroundColor: '#ffde59',
+            boxShadow: '0 5px 15px rgba(255, 222, 89, 0.4)'
+          }}
+          whileTap={{ scale: 0.98 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.6, 
+            delay: 0.6,
+            type: "spring",
+            stiffness: 300
+          }}
+          style={styles.exploreButton}
+          onClick={() => handleNavClick('courses')}
+        >
+          EXPLORE COURSES
+        </motion.button>
+      </div>
+
+      <div style={styles.statsContainer}>
+        {stats.map((stat, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.5,
+              delay: index * 0.2,
+              type: "spring",
+              stiffness: 100
+            }}
+            whileHover={{
+              scale: 1.1,
+              transition: { duration: 0.2 }
+            }}
+            style={styles.statItem}
+          >
+            <motion.div
+              animate={{
+                y: [0, -8, 0],
+                scale: [1, 1.1, 1]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              style={styles.statIcon}
+            >
+              {stat.icon}
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              style={styles.statCount}
+            >
+              {stat.count}
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              style={styles.statLabel}
+            >
+              {stat.label}
+            </motion.div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Updated Advertisement Section */}
+      <div style={styles.advertisementSection}>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={styles.adContainer}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            style={styles.adHeaderContainer}
+          >
+            <motion.h2
+              animate={{
+                scale: [1, 1.05, 1],
+                textShadow: [
+                  "2px 2px 4px rgba(0,0,0,0.1)",
+                  "4px 4px 8px rgba(0,0,0,0.2)",
+                  "2px 2px 4px rgba(0,0,0,0.1)"
+                ]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              style={styles.adMainTitle}
+            >
+              12th SAT - 2025
+            </motion.h2>
+            <div style={styles.adTitleDecoration}></div>
+          </motion.div>
+          <div style={styles.adContent}>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              style={styles.adScholarshipContainer}
+            >
+              <motion.div
+                animate={{
+                  x: [0, -20, 0],
+                  y: [0, -10, 0],
+                  rotate: [0, -5, 0]
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                whileHover={{ scale: 1.05 }}
+                style={styles.adScholarshipBox}
+              >
+                <h3 style={styles.adScholarshipTitle}>YOU CAN</h3>
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  style={styles.adScholarshipAmount}
+                >
+                  Win 75%
+                </motion.div>
+                <div style={styles.adScholarshipLabel}>Scholarship</div>
+              </motion.div>
+
+              <motion.div
+                animate={{
+                  y: [0, -15, 0],
+                  scale: [1, 1.05, 1]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                whileHover={{ scale: 1.1 }}
+                style={styles.adExamBox}
+              >
+                <div style={styles.adExamLabel}>EXAM DATE</div>
+                <motion.div
+                  animate={{ 
+                    textShadow: [
+                      "0 0 5px rgba(255,255,255,0.5)",
+                      "0 0 15px rgba(255,255,255,0.8)",
+                      "0 0 5px rgba(255,255,255,0.5)"
+                    ]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <div style={styles.adExamDate}>MARCH</div>
+                  <div style={styles.adExamDay}>27</div>
+                  <div style={styles.adExamDay}>THURSDAY</div>
+                </motion.div>
+              </motion.div>
+
+              <motion.div
+                animate={{
+                  x: [0, 20, 0],
+                  y: [0, -10, 0],
+                  rotate: [0, 5, 0]
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                whileHover={{ scale: 1.05 }}
+                style={styles.adScholarshipBox}
+              >
+                <h3 style={styles.adScholarshipTitle}>YOU CAN</h3>
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  style={styles.adScholarshipAmount}
+                >
+                  Win 75%
+                </motion.div>
+                <div style={styles.adScholarshipLabel}>Scholarship</div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div style={styles.coursesSection}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.8,
+            type: "spring",
+            stiffness: 100 
+          }}
+          style={styles.sectionHeader}
+        >
+          <motion.span
+            animate={{
+              scale: [1, 1.02, 1],
+              textShadow: [
+                "0px 0px 0px rgba(30, 58, 138, 0)",
+                "0px 0px 10px rgba(30, 58, 138, 0.3)",
+                "0px 0px 0px rgba(30, 58, 138, 0)"
+              ]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            style={styles.sectionHeaderText}
+          >
+            COURSES
+          </motion.span>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            style={styles.sectionHeaderUnderline}
+          />
+        </motion.div>
+        {loading ? (
+          <p>Loading courses...</p>
+        ) : error ? (
+          <p style={styles.errorMessage}>{error}</p>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            style={styles.coursesGrid}
+          >
+            {displayCourses.slice(0, 3).map((course, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50, rotateX: -15 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.1,
+                  type: "spring",
+                  stiffness: 100
+                }}
+                whileHover={{
+                  scale: 1.03,
+                  y: -5,
+                  transition: { duration: 0.3 }
+                }}
+                style={styles.courseCard}
+                onClick={() => handleCourseClick(course)}
+              >
+                <div style={styles.courseImageWrapper}>
+                  <div style={styles.courseImageContainer}>
+                    <img
+                      src={course.imageUrl || `https://via.placeholder.com/400x250?text=${course.mainTopic}`}
+                      alt={course.mainTopic}
+                      style={styles.courseImage}
+                      onError={(e) => { e.target.src = `https://via.placeholder.com/400x250?text=${course.mainTopic}`; }}
+                    />
+                  </div>
+                </div>
+                <div style={styles.courseContent}>
+                  <div style={styles.courseHeader}>
+                    <h3 style={styles.courseTitle}>{course.mainTopic}</h3>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+        <motion.button
+          whileHover={{ 
+            scale: 1.02,
+            backgroundColor: '#233876',
+            boxShadow: '0 5px 15px rgba(30, 58, 138, 0.3)'
+          }}
+          whileTap={{ scale: 0.98 }}
+          style={styles.viewAllButton}
+          onClick={() => handleNavClick('courses')}
+        >
+          View All Courses
+        </motion.button>
+      </div>
+    </>
+  );
+
+  const renderCourses = () => {
+    if (selectedCourse) {
+      return renderFeatureCard();
+    }
+
+    return (
+      <div style={styles.coursesPageContainer}>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={styles.coursesPageTitle}
+        >
+          Our Courses
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          style={styles.coursesPageSubtitle}
+        >
+          Explore our comprehensive range of technology courses designed to help you succeed
+        </motion.p>
+        {loading ? (
+          <p>Loading courses...</p>
+        ) : error ? (
+          <p style={styles.errorMessage}>{error}</p>
+        ) : (
+          <motion.div style={styles.coursesPageGrid}>
+            {displayCourses.map((course, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50, rotateX: -15 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.1,
+                  type: "spring",
+                  stiffness: 100
+                }}
+                whileHover={{
+                  scale: 1.03,
+                  y: -5,
+                  transition: { duration: 0.3 }
+                }}
+                style={styles.courseCard}
+                onClick={() => handleCourseClick(course)}
+              >
+                <div style={styles.courseImageWrapper}>
+                  <div style={styles.courseImageContainer}>
+                    <img
+                      src={course.imageUrl || `https://via.placeholder.com/400x250?text=${course.mainTopic}`}
+                      alt={course.mainTopic}
+                      style={styles.courseImage}
+                      onError={(e) => { e.target.src = `https://via.placeholder.com/400x250?text=${course.mainTopic}`; }}
+                    />
+                  </div>
+                </div>
+                <div style={styles.courseContent}>
+                  <div style={styles.courseHeader}>
+                    <h3 style={styles.courseTitle}>{course.mainTopic}</h3>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </div>
+    );
+  };
+
+  const renderAbout = () => (
+    <div style={styles.aboutContainer}>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        style={styles.aboutHeader}
+      >
+        <h2 style={styles.aboutTitle}>
+          About <span style={styles.aboutTitleHighlight}>CSC</span>
+        </h2>
+        <div style={styles.aboutTitleDecoration}></div>
+        <p style={styles.aboutSubheading}>
+          Computer Software College Kumarapalayam
+          <motion.span
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            style={styles.certificationBadge}
+          >
+            ISO 9001:2000 Certified
+          </motion.span>
+        </p>
+      </motion.div>
+
+      {/* Update the grid layout for better mobile responsiveness */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        style={styles.aboutContent}
+      >
+        <div style={styles.aboutGrid}>
+          {[
+            {
+              icon: "🏢",
+              title: "Who We Are",
+              content: <div>
+                Welcome to <strong>CSC Computer Education Kumarapalayam</strong>, an{' '}
+                <motion.span
+                  whileHover={{ scale: 1.05 }}
+                  style={styles.highlightedText}
+                >
+                  ISO 9001:2000 Certified Institution
+                </motion.span>{' '}
+                dedicated to empowering students with cutting-edge technology education.
+              </div>
+            },
+            {
+              icon: "📍",
+              title: "Location",
+              content: "VASAVI COMPLEX, 132, Salem Main Road, Near OVK Petrol Bunk, Nadaraja Nagar, Komarapalayam - 638183, Tamil Nadu, India."
+            },
+            {
+              icon: "⭐",
+              title: "Rating",
+              content: <motion.div 
+                style={styles.ratingContainer}
+                whileHover={{ scale: 1.02 }}
+              >
+                <div style={styles.ratingStars}>★★★★★</div>
+                <motion.div 
+                  style={styles.ratingBox}
+                  whileHover={{ backgroundColor: '#ffde59', color: '#1e3a8a' }}
+                >
+                  <span style={styles.ratingScore}>4.8</span>
+                  <span style={styles.ratingCount}>(200+ Google reviews)</span>
+                </motion.div>
+              </motion.div>
+            },
+            {
+              icon: "📞",
+              title: "Contact & Hours",
+              content: <p style={styles.aboutText}>
+                <strong>Phone:</strong> 9942725757<br />
+                <strong>Hours:</strong> 9 AM - 8 PM(Working days)<br/>
+              </p>
+            }
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50, y: 20 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ 
+                duration: 0.8,
+                delay: 0.2 * index,
+                type: "spring",
+                stiffness: 100
+              }}
+              whileHover={{ 
+                scale: 1.05,
+                rotate: [0, -1, 1, -1, 0],
+                transition: { duration: 0.2 }
+              }}
+              style={styles.aboutInfoSection}
+            >
+              <div style={styles.aboutIconSection}>
+                <span style={styles.aboutIcon}>{item.icon}</span>
+                <h3 style={styles.aboutSectionTitle}>{item.title}</h3>
+              </div>
+              <div style={styles.aboutContent}>
+                {item.content}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div style={styles.whyChooseSection}>
+          <h3 style={styles.whyChooseTitle}>Why Choose CSC?</h3>
+          <div style={styles.whyChooseGrid}>
+            {[
+              { icon: "🎯", title: "Prime Location", text: "Heart of Komarapalayam" },
+              { icon: "👥", title: "Expert Faculty", text: "Dedicated teaching staff" },
+              { icon: "💡", title: "Modern Facilities", text: "State-of-the-art infrastructure" },
+              { icon: "🎓", title: "Career Support", text: "Placement assistance" }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.1 * index,
+                  type: "spring",
+                  bounce: 0.4
+                }}
+                whileHover={{
+                  scale: 1.1,
+                  rotate: [0, -2, 2, -2, 0],
+                  transition: { duration: 0.3 }
+                }}
+                style={styles.whyChooseCard}
+              >
+                <motion.span
+                  animate={{
+                    y: [0, -10, 0],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  style={styles.whyChooseIcon}
+                >
+                  {item.icon}
+                </motion.span>
+                <h4 style={styles.whyChooseCardTitle}>{item.title}</h4>
+                <p style={styles.whyChooseCardText}>{item.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+
+  const renderContent = () => {
+    if (selectedCourse && activeSection === 'home') {
+      return renderFeatureCard();
+    }
+    switch (activeSection) {
+      case 'home':
+        return renderHome();
+      case 'courses':
+        return renderCourses();
+      case 'about':
+        return renderAbout();
+      default:
+        return renderHome();
+    }
+  };
+
+  return (
+    <div style={styles.container}>
+      <header style={styles.header}>
+        <div style={styles.logo}>
+          <span style={styles.logoText}>CSC</span>
+          <div style={styles.logoSubtext}>
+            <div>COMPUTER SOFTWARE COLLEGE</div>
+            <div style={styles.logoSmallText}>AN ISO 9001:2000 CERTIFIED INSTITUTION</div>
+          </div>
+        </div>
+        
+        <nav style={{
+          ...styles.nav,
+          display: windowWidth <= 900 ? 'none' : 'flex'
+        }}>
+          <motion.div
+            initial={{ scale: 1 }}
+            whileHover={{ 
+              scale: 1.05,
+              color: '#ffde59',
+              textShadow: '0 0 8px rgba(255, 222, 89, 0.5)'
+            }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              ...styles.navItem,
+              ...(activeSection === 'home' ? styles.activeNavItem : {}),
+              ...styles.navItemHome
+            }}
+            onClick={() => handleNavClick('home')}
+          >
+            <motion.span
+              animate={{
+                y: [0, -2, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              style={{ display: 'inline-block' }}
+            >
+              🏢
+            </motion.span>
+            {" HOME"}
+          </motion.div>
+          <motion.div
+            initial={{ scale: 1 }}
+            whileHover={{ 
+              scale: 1.05,
+              color: '#ffde59',
+              textShadow: '0 0 8px rgba(255, 222, 89, 0.5)'
+            }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              ...styles.navItem,
+              ...(activeSection === 'courses' ? styles.activeNavItem : {}),
+              ...styles.navItemCourses
+            }}
+            onClick={() => handleNavClick('courses')}
+          >
+            <motion.span
+              animate={{
+                y: [0, -2, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              style={{ display: 'inline-block' }}
+            >
+              📚
+            </motion.span>
+            {" COURSES"}
+          </motion.div>
+          <motion.div
+            initial={{ scale: 1 }}
+            whileHover={{ 
+              scale: 1.05,
+              color: '#ffde59',
+              textShadow: '0 0 8px rgba(255, 222, 89, 0.5)'
+            }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              ...styles.navItem,
+              ...(activeSection === 'about' ? styles.activeNavItem : {}),
+              ...styles.navItemAbout
+            }}
+            onClick={() => handleNavClick('about')}
+          >
+            <motion.span
+              animate={{
+                y: [0, -2, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              style={{ display: 'inline-block' }}
+            >
+              📋
+            </motion.span>
+            {" ABOUT"}
+          </motion.div>
+        </nav>
+        
+        <div 
+          style={{
+            ...styles.hamburgerMenu,
+            display: windowWidth <= 900 ? 'flex' : 'none'
+          }}
+          onClick={toggleMobileMenu}
+          role="button"
+          tabIndex={0}
+        >
+          <div style={{
+            ...styles.hamburgerLine,
+            transform: mobileMenuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none'
+          }}></div>
+          <div style={{
+            ...styles.hamburgerLine,
+            opacity: mobileMenuOpen ? 0 : 1
+          }}></div>
+          <div style={{
+            ...styles.hamburgerLine,
+            transform: mobileMenuOpen ? 'rotate(-45deg) translate(7px, -7px)' : 'none'
+          }}></div>
+        </div>
+      </header>
+      
+      {/* Update mobile menu styles inline */}
+      <AnimatePresence>
+        {mobileMenuOpen && windowWidth <= 900 && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              ...styles.mobileNavMenu,
+              display: 'flex' // Override display property when menu is open
+            }}
+          >
+            <motion.div
+              whileHover={{ x: 10 }}
+              style={{
+                ...styles.mobileNavItem,
+                ...(activeSection === 'home' ? styles.activeMobileNavItem : {})
+              }}
+              onClick={() => handleNavClick('home')}
+            >
+              🏢 HOME
+            </motion.div>
+            <motion.div
+              whileHover={{ x: 10 }}
+              style={{
+                ...styles.mobileNavItem,
+                ...(activeSection === 'courses' ? styles.activeMobileNavItem : {})
+              }}
+              onClick={() => handleNavClick('courses')}
+            >
+              📚 COURSES
+            </motion.div>
+            <motion.div
+              whileHover={{ x: 10 }}
+              style={{
+                ...styles.mobileNavItem,
+                ...(activeSection === 'about' ? styles.activeMobileNavItem : {})
+              }}
+              onClick={() => handleNavClick('about')}
+            >
+              📋 ABOUT
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait">
+        <main style={styles.main}>
+          {renderContent()}
+        </main>
+      </AnimatePresence>
+
+      <footer style={styles.footer}>
+        <div style={styles.footerTop}>
+          <div style={styles.footerLogo}>
+            <div style={styles.footerLogoText}>CSC</div>
+            <p style={styles.footerDescription}>
+              Computer Software College Kumarapalayam. An ISO 9001:2000 Certified Institution.
+            </p>
+          </div>
+          <div style={styles.footerLinks}>
+            <div style={styles.footerSection}>
+              <h4 style={styles.footerTitle}>QUICK LINKS</h4>
+              <ul style={styles.footerList}>
+                <motion.li
+                  whileHover={{ color: '#ffde59', x: 5 }}
+                  style={styles.footerListItem}
+                  onClick={() => handleNavClick('home')}
+                >
+                  Home
+                </motion.li>
+                <motion.li
+                  whileHover={{ color: '#ffde59', x: 5 }}
+                  style={styles.footerListItem}
+                  onClick={() => handleNavClick('courses')}
+                >
+                  Courses
+                </motion.li>
+                <motion.li
+                  whileHover={{ color: '#ffde59', x: 5 }}
+                  style={styles.footerListItem}
+                  onClick={() => handleNavClick('about')}
+                >
+                  About
+                </motion.li>
+                <motion.li
+                  whileHover={{ color: '#ffde59', x: 5 }}
+                  style={styles.footerListItem}
+                >
+                  Contact
+                </motion.li>
+              </ul>
+            </div>
+            <div style={styles.footerSection}>
+              <h4 style={styles.footerTitle}>CONTACT US</h4>
+              <div style={styles.contactInfo}>
+                <motion.div
+                  whileHover={{ color: '#ffde59', x: 5 }}
+                  style={styles.contactItem}
+                >
+                  <span style={styles.contactIcon}>✉️</span>
+                  <span>{contactInfo.email}</span>
+                </motion.div>
+                <motion.div
+                  whileHover={{ color: '#ffde59', x: 5 }}
+                  style={styles.contactItem}
+                >
+                  <span style={styles.contactIcon}>📞</span>
+                  <span>{contactInfo.phone}</span>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style={styles.footerBottom}>
+          <p style={styles.copyright}>© 2025 Computer Software College. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+// Export the component
+//
+
+const styles = {
+  container: {
+    fontFamily: "'Roboto', Arial, sans-serif",
+    margin: 0,
+    padding: 0,
+    backgroundColor: '#f2f2f2',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    maxWidth: '100%',
+    overflowX: 'hidden',
+  },
+  header: {
+    backgroundColor: '#1e3a8a',
+    color: 'white',
+    padding: '1.5rem 2rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'sticky',
+    top: 0,
+    zIndex: 1000,
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  logo: {
+    display: 'flex',
+    alignItems: 'center',
+    maxWidth: window.innerWidth <= 900 ? '200px' : 'auto',
+  },
+  logoText: {
+    fontSize: window.innerWidth <= 900 ? '1.6rem' : '2rem',
+    fontWeight: 'bold',
+    marginRight: window.innerWidth <= 900 ? '8px' : '12px',
+    color: '#ffde59',
+  },
+  logoSubtext: {
+    display: 'flex',
+    flexDirection: 'column',
+    fontSize: window.innerWidth <= 900 ? '0.7rem' : '0.8rem',
+  },
+  logoSmallText: {
+    fontSize: window.innerWidth <= 900 ? '0.55rem' : '0.65rem',
+    opacity: 0.8,
+  },
+  nav: {
+    display: 'flex',
+    gap: '2.5rem',
+    '@media screen and (max-width: 900px)': {
+      display: 'none',
+    },
+  },
+  navItem: {
+    cursor: 'pointer',
+    fontWeight: '600',
+    fontSize: '1rem',
+    transition: 'all 0.3s ease',
+    padding: '0.8rem 1.2rem',
+    borderRadius: '8px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    letterSpacing: '1px',
+    position: 'relative',
+    overflow: 'hidden',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  },
+  navItemHome: {
+    background: 'linear-gradient(45deg, rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.6))',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+    '&:hover': {
+      background: 'linear-gradient(45deg, rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.7))',
+      border: '1px solid rgba(255, 222, 89, 0.3)',
+      boxShadow: '0 4px 20px rgba(255, 222, 89, 0.2)',
+    },
+  },
+  navItemCourses: {
+    background: 'linear-gradient(45deg, rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.6))',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+    '&:hover': {
+      background: 'linear-gradient(45deg, rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.7))',
+      border: '1px solid rgba(255, 222, 89, 0.3)',
+      boxShadow: '0 4px 20px rgba(255, 222, 89, 0.2)',
+    },
+  },
+  activeNavItem: {
+    borderBottom: '2px solid #ffde59',
+    color: '#ffde59',
+    background: 'linear-gradient(45deg, rgba(30, 58, 138, 1), rgba(30, 58, 138, 0.8))',
+    boxShadow: '0 4px 20px rgba(255, 222, 89, 0.15)',
+  },
+  navItemAbout: {
+    background: 'linear-gradient(45deg, rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.6))',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+    '&:hover': {
+      background: 'linear-gradient(45deg, rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.7))',
+      border: '1px solid rgba(255, 222, 89, 0.3)',
+      boxShadow: '0 4px 20px rgba(255, 222, 89, 0.2)',
+    },
+  },
+  hamburgerMenu: {
+    display: 'none',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    width: '30px',
+    height: '24px',
+    cursor: 'pointer',
+    zIndex: 1001,
+    '@media screen and (max-width: 900px)': {
+      display: 'flex',
+    },
+  },
+  hamburgerLine: {
+    width: '100%',
+    height: '3px',
+    backgroundColor: 'white',
+    borderRadius: '3px',
+    transition: 'all 0.3s ease',
+  },
+  mobileNavMenu: {
+    position: 'fixed',
+    top: '80px',
+    left: 0,
+    right: 0,
+    backgroundColor: '#1e3a8a',
+    padding: '1rem',
+    display: 'none', // Default to none
+    flexDirection: 'column',
+    gap: '0.5rem',
+    zIndex: 999,
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+    '@media screen and (max-width: 900px)': {
+      display: 'none', // Remove mobileMenuOpen reference
+    },
+  },
+  mobileNavItem: {
+    color: 'white',
+    padding: '1rem 1.5rem',
+    fontSize: '1.1rem',
+    fontWeight: '500',
+    cursor: 'pointer',
+    borderRadius: '8px',
+    transition: 'all 0.3s ease',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      color: '#ffde59',
+    },
+  },
+  activeMobileNavItem: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    color: '#ffde59',
+    borderLeft: '4px solid #ffde59',
+  },
+  main: {
+    flex: 1,
+    width: '100%',
+    maxWidth: '100%',
+    overflowX: 'hidden',
+  },
+  hero: {
+    backgroundColor: '#1e3a8a',
+    color: 'white',
+    padding: '4rem 2rem',
+    textAlign: 'center',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  title: {
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    margin: '0 0 1.2rem',
+    lineHeight: '1.3',
+  },
+  subtitle: {
+    fontSize: '1.8rem',
+    fontWeight: 'normal',
+    margin: '0 0 1.2rem',
+    lineHeight: '1.4',
+  },
+  highlight: {
+    color: '#ffde59',
+  },
+  quote: {
+    fontSize: '1.1rem',
+    margin: '0 auto 2.5rem',
+    maxWidth: '700px',
+    opacity: 0.9,
+    lineHeight: '1.6',
+  },
+  exploreButton: {
+    backgroundColor: '#ffde59',
+    color: '#1e3a8a',
+    border: 'none',
+    padding: '0.9rem 2.2rem',
+    fontSize: '1rem',
+    fontWeight: '600',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    boxShadow: '0 4px 10px rgba(255, 222, 89, 0.2)',
+    position: 'relative',
+    overflow: 'hidden',
+    '&:before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      background: 'linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+      transform: 'translateX(-100%)',
+    },
+  },
+  statsContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '5rem',
+    backgroundColor: '#1e3a8a',
+    padding: '2.5rem 1rem',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  statItem: {
+    textAlign: 'center',
+    color: 'white',
+    minWidth: '120px',
+    perspective: '1000px',
+    transformStyle: 'preserve-3d',
+  },
+  statIcon: {
+    fontSize: '3rem',
+    marginBottom: '0.8rem',
+  },
+  statCount: {
+    fontSize: '1.8rem',
+    fontWeight: 'bold',
+    color: '#ffde59',
+  },
+  statLabel: {
+    fontSize: '1rem',
+  },
+  coursesSection: {
+    padding: '6rem 2rem 4rem',
+    textAlign: 'center',
+    backgroundColor: '#f2f2f2',
+    width: '100%',
+    boxSizing: 'border-box',
+    position: 'relative',
+    '@media (max-width: 768px)': {
+      padding: '4rem 1.5rem 3rem',
+    },
+    '@media (max-width: 480px)': {
+      padding: '3rem 1rem 2rem',
+    },
+  },
+  sectionHeader: {
+    position: 'relative',
+    display: 'inline-flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: '4rem',
+    '@media (max-width: 768px)': {
+      marginBottom: '3rem',
+    },
+    '@media (max-width: 480px)': {
+      marginBottom: '2.5rem',
+    },
+  },
+  sectionHeaderText: {
+    fontSize: '3.5rem',
+    fontWeight: 'bold',
+    color: '#1e3a8a',
+    padding: '0.5rem 3rem',
+    borderRadius: '15px',
+    background: 'linear-gradient(135deg, rgba(255, 222, 89, 0.15), rgba(30, 58, 138, 0.1))',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+    letterSpacing: '4px',
+    textTransform: 'uppercase',
+    border: '2px solid rgba(255, 222, 89, 0.3)',
+    '@media (max-width: 1024px)': {
+      fontSize: '3rem',
+      padding: '0.5rem 2.5rem',
+      letterSpacing: '3px',
+    },
+    '@media (max-width: 768px)': {
+      fontSize: '2.5rem',
+      padding: '0.4rem 2rem',
+      letterSpacing: '2px',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '2rem',
+      padding: '0.3rem 1.5rem',
+      letterSpacing: '1px',
+    },
+  },
+  sectionHeaderUnderline: {
+    position: 'absolute',
+    bottom: '-10px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    height: '4px',
+    background: 'linear-gradient(90deg, transparent, #ffde59, transparent)',
+    borderRadius: '2px',
+    '@media (max-width: 768px)': {
+      height: '3px',
+      bottom: '-8px',
+    },
+    '@media (max-width: 480px)': {
+      height: '2px',
+      bottom: '-6px',
+    },
+  },
+  coursesGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '2rem',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    width: '100%',
+  },
+  courseCard: {
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    overflow: 'hidden',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    maxHeight: '350px', // Increased from 300px to 350px
+    margin: '0 auto',
+    border: '1px solid rgba(0, 0, 0, 0.1)',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
+    },
+  },
+  courseImageWrapper: {
+    position: 'relative',
+    width: '100%',
+    paddingTop: '60%', // Reduced from 65% to 60% to give more space for the title
+    overflow: 'hidden',
+  },
+  courseImageContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+  },
+  courseImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    objectPosition: 'center',
+  },
+  courseContent: {
+    padding: '1.2rem', // Increased from 1rem to 1.2rem
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '60px', // Added minimum height for the content area
+  },
+  courseHeader: {
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  courseTitle: {
+    margin: 0,
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    color: '#1e3a8a',
+    textAlign: 'center',
+    '@media (max-width: 768px)': {
+      fontSize: '1.1rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1rem',
+    },
+  },
+  viewAllButton: {
+    backgroundColor: '#1e3a8a',
+    color: 'white',
+    border: 'none',
+    padding: '0.9rem 2.2rem',
+    fontSize: '1rem',
+    fontWeight: '600',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    marginTop: '3rem',
+    transition: 'all 0.3s ease',
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    boxShadow: '0 4px 10px rgba(30, 58, 138, 0.2)',
+    position: 'relative',
+    overflow: 'hidden',
+    display: 'inline-block',
+    '&:hover': {
+      backgroundColor: '#233876',
+      transform: 'translateY(-2px)',
+    },
+    '&:active': {
+      transform: 'translateY(0)',
+    },
+  },
+  footer: {
+    backgroundColor: '#0f1f47',
+    color: 'white',
+    padding: '4rem 2rem 1.5rem',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  footerTop: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: '3rem',
+    maxWidth: '1200px',
+    margin: '0 auto',
+  },
+  footerLogo: {
+    maxWidth: '350px',
+  },
+  footerLogoText: {
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    color: '#ffde59',
+    marginBottom: '1.2rem',
+  },
+  footerDescription: {
+    fontSize: '0.95rem',
+    lineHeight: '1.6',
+    margin: 0,
+  },
+  footerLinks: {
+    display: 'flex',
+    gap: '5rem',
+    flexWrap: 'wrap',
+  },
+  footerSection: {
+    minWidth: '160px',
+  },
+  footerTitle: {
+    fontSize: '1rem',
+    marginBottom: '1.5rem',
+    fontWeight: 'bold',
+  },
+  footerList: {
+    listStyle: 'none',
+    padding: 0,
+    margin: 0,
+  },
+  footerListItem: {
+    margin: '0.6rem 0',
+    fontSize: '0.95rem',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+  },
+  contactInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1.2rem',
+  },
+  contactItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.8rem',
+    transition: 'all 0.3s ease',
+    fontSize: '0.95rem',
+  },
+  contactIcon: {
+    fontSize: '1.3rem',
+  },
+  footerBottom: {
+    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+    marginTop: '3rem',
+    paddingTop: '2rem',
+    textAlign: 'center',
+  },
+  copyright: {
+    fontSize: '0.85rem',
+    margin: 0,
+    opacity: 0.7,
+  },
+  featureCardContainer: {
+    padding: '3rem 2rem',
+    maxWidth: '1000px',
+    margin: '0 auto',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  backButton: {
+    backgroundColor: 'transparent',
+    color: '#1e3a8a',
+    border: 'none',
+    padding: '0.5rem 1rem',
+    fontSize: '1rem',
+    fontWeight: '600',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '2.5rem',
+    transition: 'all 0.3s ease',
+    borderRadius: '8px',
+    '&:hover': {
+      backgroundColor: 'rgba(30, 58, 138, 0.05)',
+    },
+  },
+  featureCard: {
+    backgroundColor: 'white',
+    borderRadius: '15px',
+    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column', // Change to column
+    width: '100%',
+  },
+  featureImageWrapper: {
+    width: '100%',
+    overflow: 'hidden',
+  },
+  featureImage: {
+    width: '100%',
+    height: 'auto', // Ensure the image maintains its aspect ratio
+    objectFit: 'cover',
+  },
+  featureContent: {
+    padding: '2rem',
+    backgroundColor: '#fff',
+  },
+  featureTitle: {
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    color: '#1e3a8a', // Main topic color
+    marginBottom: '1.2rem',
+  },
+  featureText: {
+    fontSize: '1.1rem',
+    color: '#555',
+    marginBottom: '1.5rem',
+    lineHeight: '1.6',
+  },
+  featureSectionTitle: {
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    color: '#333',
+    margin: '2rem 0 1.2rem',
+  },
+  featureList: {
+    listStyle: 'none',
+    padding: 0,
+    margin: 0,
+  },
+  featureListItem: {
+    fontSize: '1rem',
+    color: '#555',
+    marginBottom: '1rem',
+    paddingLeft: '1.5rem',
+    position: 'relative',
+    lineHeight: '1.6',
+  },
+  subtopic: {
+    color: '#ffde59', // Subtopic color
+    fontWeight: 'bold',
+  },
+  content: {
+    color: '#666', // Content color
+  },
+  enrollButton: {
+    backgroundColor: '#ffde59',
+    color: '#1e3a8a',
+    border: 'none',
+    padding: '0.9rem 2.2rem',
+    fontSize: '1rem',
+    fontWeight: '600',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    marginTop: '2.5rem',
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    boxShadow: '0 4px 10px rgba(255, 222, 89, 0.2)',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  coursesPageContainer: {
+    padding: '4rem 2rem',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  coursesPageTitle: {
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    color: '#1e3a8a',
+    marginBottom: '0.8rem',
+    textAlign: 'center',
+  },
+  coursesPageSubtitle: {
+    fontSize: '1.1rem',
+    color: '#555',
+    marginBottom: '3.5rem',
+    textAlign: 'center',
+    lineHeight: '1.6',
+  },
+  coursesPageGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+    gap: '2rem',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '0 1rem',
+    width: '100%',
+    '@media (max-width: 768px)': {
+      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    },
+  },
+  aboutContainer: {
+    padding: '2rem 1rem',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    width: '100%',
+    boxSizing: 'border-box',
+    '@media (max-width: 768px)': {
+      padding: '1.5rem 0.8rem',
+    },
+    '@media (max-width: 480px)': {
+      padding: '1rem 0.5rem',
+    },
+  },
+  aboutHeader: {
+    textAlign: 'center',
+    marginBottom: '3rem',
+    padding: '0 1rem',
+    '@media (max-width: 768px)': {
+      marginBottom: '2rem',
+    },
+    '@media (max-width: 480px)': {
+      marginBottom: '1.5rem',
+    },
+  },
+  aboutTitle: {
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    color: '#1e3a8a',
+    margin: '0',
+    '@media (max-width: 768px)': {
+      fontSize: '2rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.8rem',
+    },
+  },
+  aboutTitleHighlight: {
+    color: '#ffde59',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.1)',
+  },
+  aboutTitleDecoration: {
+    width: '80px',
+    height: '4px',
+    background: 'linear-gradient(90deg, #ffde59, #1e3a8a)',
+    margin: '1rem auto',
+    borderRadius: '2px',
+  },
+  aboutSubheading: {
+    fontSize: '1.2rem',
+    color: '#666',
+    margin: '1rem 0 0 0',
+    '@media (max-width: 768px)': {
+      fontSize: '1.1rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1rem',
+    },
+  },
+  aboutContent: {
+    backgroundColor: 'white',
+    borderRadius: '15px',
+    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.06)',
+    padding: '2rem',
+    width: '100%',
+    boxSizing: 'border-box',
+    '@media (max-width: 768px)': {
+      padding: '1.5rem',
+      borderRadius: '12px',
+    },
+    '@media (max-width: 480px)': {
+      padding: '1rem',
+      borderRadius: '10px',
+    },
+  },
+  aboutGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '2rem',
+    marginBottom: '3rem',
+    '@media (max-width: 1024px)': {
+      gridTemplateColumns: '1fr', // Changed to single column
+      gap: '1.5rem',
+    },
+    '@media (max-width: 768px)': {
+      gridTemplateColumns: '1fr',
+      gap: '1.5rem',
+      marginBottom: '2rem',
+    },
+    '@media (max-width: 480px)': {
+      gap: '1.25rem',
+      marginBottom: '1.5rem',
+    },
+  },
+  aboutInfoSection: {
+    backgroundColor: 'white',
+    padding: '2rem',
+    borderRadius: '12px',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)',
+    transition: 'all 0.3s ease',
+    border: '1px solid rgba(0, 0, 0, 0.05)',
+    width: '100%', // Added to ensure full width
+    maxWidth: '100%', // Added to prevent overflow
+    margin: '0 auto', // Center the cards
+    '&:hover': {
+      transform: 'translateY(-5px)',
+    },
+    '&:hover:nth-child(1)': {
+      background: 'linear-gradient(135deg, #ffffff 0%, #e8f0ff 100%)',
+      borderColor: 'rgba(30, 58, 138, 0.2)',
+    },
+    '&:hover:nth-child(2)': {
+      background: 'linear-gradient(135deg, #ffffff 0%, #fff0e5 100%)',
+      borderColor: 'rgba(255, 149, 0, 0.2)',
+    },
+    '&:hover:nth-child(3)': {
+      background: 'linear-gradient(135deg, #ffffff 0%, #fff9e6 100%)',
+      borderColor: 'rgba(255, 222, 89, 0.2)',
+    },
+    '&:hover:nth-child(4)': {
+      background: 'linear-gradient(135deg, #ffffff 0%, #e5fff2 100%)',
+      borderColor: 'rgba(34, 197, 94, 0.2)',
+    },
+    '@media (max-width: 1024px)': {
+      padding: '1.75rem',
+      '&:hover': {
+        transform: 'translateY(-3px)',
+      },
+    },
+    '@media (max-width: 768px)': {
+      padding: '1.5rem',
+      marginBottom: '0', // Remove bottom margin as gap handles spacing
+    },
+    '@media (max-width: 480px)': {
+      padding: '1.25rem',
+      borderRadius: '10px',
+    },
+  },
+  aboutIconSection: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '1rem',
+    marginBottom: '1.25rem',
+    '@media (max-width: 768px)': {
+      gap: '0.75rem',
+      marginBottom: '1rem',
+    },
+  },
+  aboutIcon: {
+    fontSize: '2.5rem',
+    color: '#1e3a8a',
+    '@media (max-width: 768px)': {
+      fontSize: '2rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.75rem',
+    },
+  },
+  aboutSectionTitle: {
+    fontSize: '1.5rem',
+    color: '#1e3a8a',
+    fontWeight: 'bold',
+    margin: 0,
+    '@media (max-width: 768px)': {
+      fontSize: '1.3rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.2rem',
+    },
+  },
+  aboutText: {
+    fontSize: '1rem',
+    color: '#555',
+    lineHeight: '1.6',
+    margin: 0,
+    '@media (max-width: 768px)': {
+      fontSize: '0.95rem',
+      lineHeight: '1.5',
+    },
+  },
+  whyChooseSection: {
+    marginTop: '3rem',
+    '@media (max-width: 768px)': {
+      marginTop: '2rem',
+    },
+  },
+  whyChooseTitle: {
+    fontSize: '2rem',
+    color: '#1e3a8a',
+    textAlign: 'center',
+    marginBottom: '2rem',
+    '@media (max-width: 768px)': {
+      fontSize: '1.75rem',
+      marginBottom: '1.5rem',
+    },
+  },
+  whyChooseGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '1.5rem',
+    '@media (max-width: 1024px)': {
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gap: '1rem',
+    },
+    '@media (max-width: 480px)': {
+      gridTemplateColumns: '1fr',
+      gap: '1rem',
+    },
+  },
+  whyChooseCard: {
+    backgroundColor: 'white',
+    padding: '1.5rem',
+    borderRadius: '12px',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)',
+    textAlign: 'center',
+    transition: 'all 0.3s ease',
+    border: '1px solid rgba(0, 0, 0, 0.05)',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+    },
+    '&:hover:nth-child(1)': {
+      background: 'linear-gradient(135deg, #ffffff 0%, #ffedeb 100%)',
+      borderColor: 'rgba(239, 68, 68, 0.2)',
+    },
+    '&:hover:nth-child(2)': {
+      background: 'linear-gradient(135deg, #ffffff 0%, #edf7ff 100%)',
+      borderColor: 'rgba(59, 130, 246, 0.2)',
+    },
+    '&:hover:nth-child(3)': {
+      background: 'linear-gradient(135deg, #ffffff 0%, #f3e8ff 100%)',
+      borderColor: 'rgba(168, 85, 247, 0.2)',
+    },
+    '&:hover:nth-child(4)': {
+      background: 'linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%)',
+      borderColor: 'rgba(16, 185, 129, 0.2)',
+    },
+    '@media (max-width: 768px)': {
+      padding: '1.25rem',
+      '&:hover': {
+        transform: 'translateY(-3px)',
+      },
+    },
+    '@media (max-width: 480px)': {
+      padding: '1.25rem',
+      marginBottom: '0.5rem',
+    },
+  },
+  whyChooseIcon: {
+    fontSize: '2.5rem',
+    marginBottom: '1rem',
+    display: 'block',
+    '@media (max-width: 768px)': {
+      fontSize: '2.2rem',
+      marginBottom: '0.8rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '2rem',
+      marginBottom: '0.6rem',
+    },
+  },
+  whyChooseCardTitle: {
+    fontSize: '1.2rem',
+    color: '#1e3a8a',
+    margin: '0 0 0.5rem 0',
+    '@media (max-width: 480px)': {
+      fontSize: '1.1rem',
+    },
+  },
+  whyChooseCardText: {
+    fontSize: '0.9rem',
+    color: '#666',
+    margin: '0',
+    '@media (max-width: 480px)': {
+      fontSize: '0.85rem',
+    },
+  },
+  ratingContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '0.75rem',
+    padding: '0.5rem',
+    transition: 'all 0.3s ease',
+    '@media (max-width: 768px)': {
+      gap: '0.5rem',
+    },
+  },
+  ratingStars: {
+    color: '#ffde59',
+    fontSize: '2rem',
+    textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    '@media (max-width: 768px)': {
+      fontSize: '1.75rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.5rem',
+    },
+  },
+  ratingBox: {
+    backgroundColor: '#1e3a8a',
+    color: 'white',
+    padding: '0.5rem 1rem',
+    borderRadius: '8px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    transition: 'all 0.3s ease',
+    '@media (max-width: 768px)': {
+      padding: '0.4rem 0.8rem',
+    },
+  },
+  ratingScore: {
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+  },
+  ratingCount: {
+    fontSize: '1rem',
+    opacity: 0.9,
+  },
+  certificationBadge: {
+    display: 'inline-block',
+    backgroundColor: '#ffde59',
+    color: '#1e3a8a',
+    padding: '0.4rem 1rem',
+    borderRadius: '20px',
+    fontSize: '0.9rem',
+    fontWeight: 'bold',
+    marginLeft: '1rem',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    '@media (max-width: 768px)': {
+      display: 'block',
+      margin: '0.5rem auto',
+      width: 'fit-content',
+      fontSize: '0.8rem',
+    },
+  },
+  highlightedText: {
+    backgroundColor: '#ffde59',
+    color: '#1e3a8a',
+    padding: '0.2rem 0.5rem',
+    borderRadius: '4px',
+    fontWeight: 'bold',
+    display: 'inline-block',
+    transition: 'all 0.3s ease',
+  },
+  advertisementSection: {
+    padding: '2rem 1rem',
+    backgroundColor: '#f8f9fa',
+    width: '100%',
+    boxSizing: 'border-box',
+    '@media (max-width: 768px)': {
+      padding: '1.5rem 0.8rem',
+    },
+    '@media (max-width: 480px)': {
+      padding: '1rem 0.5rem',
+    },
+  },
+  adContainer: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    backgroundColor: '#fff',
+    borderRadius: '20px',
+    padding: '2rem',
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
+    position: 'relative',
+    border: '4px solid #ffde59',
+    '@media (max-width: 768px)': {
+      padding: '1.5rem',
+      borderRadius: '15px',
+    },
+    '@media (max-width: 480px)': {
+      padding: '1rem',
+      borderRadius: '12px',
+      border: '3px solid #ffde59',
+    },
+  },
+  adContent: {
+    width: '100%',
+    textAlign: 'center',
+  },
+  adScholarshipContainer: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    gap: '2rem',
+    marginBottom: '2rem',
+    flexWrap: 'wrap',
+    '@media (max-width: 1024px)': {
+      gap: '1.5rem',
+    },
+    '@media (max-width: 768px)': {
+      gap: '1rem',
+      marginBottom: '1.5rem',
+    },
+    '@media (max-width: 480px)': {
+      flexDirection: 'column',
+      gap: '1rem',
+    },
+  },
+  adScholarshipBox: {
+    backgroundColor: '#ffde59',
+    padding: '1.5rem',
+    borderRadius: '10px',
+    minWidth: '200px',
+    transformOrigin: 'center center',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    '@media (max-width: 1024px)': {
+      minWidth: '180px',
+      padding: '1.2rem',
+    },
+    '@media (max-width: 768px)': {
+      minWidth: '150px',
+      padding: '1rem',
+    },
+    '@media (max-width: 480px)': {
+      width: '100%',
+      maxWidth: '280px',
+      margin: '0 auto',
+    },
+  },
+  adScholarshipTitle: {
+    color: '#1e3a8a',
+    fontSize: '1.2rem',
+    margin: '0 0 0.5rem 0',
+    '@media (max-width: 768px)': {
+      fontSize: '1.1rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1rem',
+    },
+  },
+  adScholarshipAmount: {
+    color: '#ff0000',
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    margin: '0.5rem 0',
+    display: 'inline-block',
+    transformOrigin: 'center center',
+    '@media (max-width: 768px)': {
+      fontSize: '2.2rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '2rem',
+    },
+  },
+  adScholarshipLabel: {
+    color: '#1e3a8a',
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    '@media (max-width: 768px)': {
+      fontSize: '1.3rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.2rem',
+    },
+  },
+  adExamBox: {
+    backgroundColor: '#ff0000',
+    padding: '1.5rem',
+    borderRadius: '10px',
+    minWidth: '200px',
+    color: 'white',
+    transformOrigin: 'center center',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 8px 20px rgba(255, 0, 0, 0.2)',
+    '@media (max-width: 1024px)': {
+      minWidth: '180px',
+      padding: '1.2rem',
+    },
+    '@media (max-width: 768px)': {
+      minWidth: '150px',
+      padding: '1rem',
+    },
+    '@media (max-width: 480px)': {
+      width: '100%',
+      maxWidth: '280px',
+      margin: '0 auto',
+    },
+  },
+  adExamLabel: {
+    fontSize: '1.2rem',
+    marginBottom: '0.5rem',
+    '@media (max-width: 768px)': {
+      fontSize: '1.1rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1rem',
+    },
+  },
+  adExamDate: {
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    marginBottom: '0.5rem',
+    '@media (max-width: 768px)': {
+      fontSize: '1.8rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.6rem',
+    },
+  },
+  adExamDay: {
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    '@media (max-width: 768px)': {
+      fontSize: '2.2rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '2rem',
+    },
+  },
+  adHeaderContainer: {
+    textAlign: 'center',
+    marginBottom: '2rem',
+    position: 'relative',
+    padding: '0.5rem 0',
+    '@media (max-width: 768px)': {
+      marginBottom: '1.5rem',
+    },
+    '@media (max-width: 480px)': {
+      marginBottom: '1rem',
+    },
+  },
+  adMainTitle: {
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    color: '#1e3a8a',
+    margin: '0',
+    padding: '0.5rem 0',
+    position: 'relative',
+    display: 'inline-block',
+    textTransform: 'uppercase',
+    letterSpacing: '2px',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.1)',
+    transformOrigin: 'center center',
+    '@media (max-width: 768px)': {
+      fontSize: '2rem',
+      letterSpacing: '1.5px',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.5rem',
+      letterSpacing: '1px',
+    },
+  },
+  adTitleDecoration: {
+    width: '60px',
+    height: '3px',
+  },
+  '@media (max-width: 768px)': {
+    container: {
+      width: '100%',
+      overflowX: 'hidden',
+    },
+    header: {
+      padding: '1rem 1.5rem',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row',
+      width: '100%',
+      boxSizing: 'border-box',
+    },
+    logo: {
+      marginBottom: '0',
+    },
+    logoText: {
+      fontSize: '1.6rem',
+    },
+    logoSubtext: {
+      fontSize: '0.65rem',
+    },
+    logoSmallText: {
+      fontSize: '0.5rem',
+    },
+    nav: {
+      display: 'none',
+    },
+    hamburgerMenu: {
+      display: 'flex',
+    },
+    mobileNav: {
+      display: 'flex',
+      boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+    },
+    activeNavItem: {
+      borderBottom: 'none',
+      color: '#ffde59',
+    },
+    hero: {
+      padding: '2rem 1.5rem',
+      width: '100%',
+      boxSizing: 'border-box',
+    },
+    title: {
+      fontSize: '1.8rem',
+      lineHeight: '1.4',
+      marginBottom: '1rem',
+    },
+    subtitle: {
+      fontSize: '1.3rem',
+      lineHeight: '1.5',
+      marginBottom: '1rem',
+    },
+    quote: {
+      fontSize: '0.95rem',
+      maxWidth: '100%',
+      lineHeight: '1.5',
+      marginBottom: '1.5rem',
+    },
+    exploreButton: {
+      padding: '0.8rem 2rem',
+      fontSize: '0.9rem',
+      minWidth: '180px',
+    },
+    statsContainer: {
+      gap: '2rem',
+      padding: '1.5rem 1rem',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      width: '100%',
+      boxSizing: 'border-box',
+    },
+    statItem: {
+      minWidth: '100px',
+    },
+    statIcon: {
+      fontSize: '2.5rem',
+    },
+    statCount: {
+      fontSize: '1.5rem',
+    },
+    statLabel: {
+      fontSize: '0.9rem',
+    },
+    coursesGrid: {
+      gridTemplateColumns: '1fr',
+      gap: '1.5rem',
+      width: '100%',
+    },
+    coursesPageGrid: {
+      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: '1.5rem',
+      padding: '0 1rem',
+    },
+    courseCard: {
+      maxWidth: '100%',
+    },
+    coursesSection: {
+      padding: '2rem 1rem',
+      width: '100%',
+      boxSizing: 'border-box',
+    },
+    sectionHeader: {
+      fontSize: '1rem',
+      padding: '0.5rem 1.5rem',
+    },
+    viewAllButton: {
+      padding: '0.8rem 2rem',
+      fontSize: '0.9rem',
+      width: 'auto',
+      minWidth: '200px',
+    },
+    footerTop: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      gap: '2rem',
+    },
+    footerLinks: {
+      gap: '2rem',
+      flexDirection: 'column',
+    },
+    footerLogo: {
+      maxWidth: '100%',
+    },
+    footerLogoText: {
+      fontSize: '1.6rem',
+    },
+    footerDescription: {
+      fontSize: '0.9rem',
+    },
+    footerTitle: {
+      fontSize: '0.9rem',
+    },
+    footerListItem: {
+      fontSize: '0.9rem',
+    },
+    contactItem: {
+      fontSize: '0.9rem',
+    },
+    contactIcon: {
+      fontSize: '1.2rem',
+    },
+    advertisementSection: {
+      padding: '1rem',
+    },
+    adContainer: {
+      padding: '1rem',
+    },
+    adMainTitle: {
+      fontSize: '1.5rem',
+      letterSpacing: '1px',
+    },
+    adTitleDecoration: {
+      width: '50px',
+      height: '3px',
+    },
+    aboutGrid: {
+      gridTemplateColumns: '1fr',
+    },
+    whyChooseGrid: {
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gap: '1rem',
+    },
+    aboutInfoSection: {
+      padding: '1.5rem',
+    },
+  },
+  '@media (max-width: 480px)': {
+    container: {
+      width: '100%',
+      overflowX: 'hidden',
+    },
+    header: {
+      padding: '0.8rem 1rem',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+    logo: {
+      marginBottom: '0',
+    },
+    logoText: {
+      fontSize: '1.4rem',
+    },
+    logoSubtext: {
+      fontSize: '0.55rem',
+    },
+    logoSmallText: {
+      fontSize: '0.45rem',
+    },
+    nav: {
+      display: 'none',
+    },
+    hamburgerMenu: {
+      display: 'flex',
+    },
+    hero: {
+      padding: '1.5rem 1rem',
+    },
+    title: {
+      fontSize: '1.5rem',
+      lineHeight: '1.3',
+      marginBottom: '0.8rem',
+    },
+    subtitle: {
+      fontSize: '1.1rem',
+      lineHeight: '1.4',
+      marginBottom: '0.8rem',
+    },
+    quote: {
+      fontSize: '0.85rem',
+      lineHeight: '1.5',
+      marginBottom: '1.2rem',
+    },
+    exploreButton: {
+      padding: '0.7rem 1.8rem',
+      fontSize: '0.85rem',
+      minWidth: '160px',
+    },
+    statsContainer: {
+      gap: '1.5rem',
+      padding: '1rem',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '100%',
+      boxSizing: 'border-box',
+    },
+    statItem: {
+      minWidth: '90px',
+    },
+    statIcon: {
+      fontSize: '2rem',
+    },
+    statCount: {
+      fontSize: '1.2rem',
+    },
+    statLabel: {
+      fontSize: '0.8rem',
+    },
+    coursesSection: {
+      padding: '1.5rem 1rem',
+      width: '100%',
+      boxSizing: 'border-box',
+    },
+    sectionHeader: {
+      fontSize: '0.9rem',
+      padding: '0.4rem 1.2rem',
+    },
+    courseCard: {
+      maxWidth: '100%',
+    },
+    courseTitle: {
+      fontSize: '1rem',
+    },
+    courseDescription: {
+      fontSize: '0.85rem',
+    },
+    viewAllButton: {
+      padding: '0.7rem 1.8rem',
+      fontSize: '0.85rem',
+      width: 'auto',
+      minWidth: '180px',
+    },
+    footer: {
+      padding: '2rem 1rem 1rem',
+      width: '100%',
+      boxSizing: 'border-box',
+    },
+    footerTop: {
+      gap: '1.5rem',
+    },
+    footerLogoText: {
+      fontSize: '1.4rem',
+    },
+    footerDescription: {
+      fontSize: '0.85rem',
+    },
+    footerTitle: {
+      fontSize: '0.85rem',
+    },
+    footerListItem: {
+      fontSize: '0.85rem',
+    },
+    contactItem: {
+      fontSize: '0.85rem',
+    },
+    contactIcon: {
+      fontSize: '1.1rem',
+    },
+    copyright: {
+      fontSize: '0.75rem',
+    },
+    advertisementSection: {
+      padding: '0.8rem',
+    },
+    adContainer: {
+      padding: '1rem',
+    },
+    adMainTitle: {
+      fontSize: '1.5rem',
+      letterSpacing: '1px',
+    },
+    adTitleDecoration: {
+      width: '50px',
+      height: '3px',
+    },
+    aboutGrid: {
+      gridTemplateColumns: '1fr',
+    },
+    whyChooseGrid: {
+      gridTemplateColumns: '1fr',
+    },
+    aboutTitle: {
+      fontSize: '2rem',
+    },
+    aboutSubheading: {
+      fontSize: '1rem',
+    },
+    whyChooseCard: {
+      padding: '1.5rem',
+    },
+    coursesPageGrid: {
+      gridTemplateColumns: '1fr',
+      gap: '1.5rem',
+      padding: '0 1rem',
+    },
+    courseContent: {
+      padding: '1rem',
+    },
+  },
+};
+
+export default Home;
