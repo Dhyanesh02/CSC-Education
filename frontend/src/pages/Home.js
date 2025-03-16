@@ -1731,12 +1731,21 @@ const styles = {
   },
   aboutGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
+    gridTemplateColumns: '1fr', // Always show one card per row
     gap: '2rem',
     marginBottom: '3rem',
-    '@media (max-width: 1024px)': {
-      gridTemplateColumns: '1fr', // Single column on tablet and below
+    width: '100%',
+    maxWidth: '800px', // Add maximum width for better readability
+    margin: '0 auto', // Center the grid
+    padding: '0 1rem', // Add padding on the sides
+    boxSizing: 'border-box',
+    '@media (max-width: 768px)': {
       gap: '1.5rem',
+      padding: '0 0.8rem',
+    },
+    '@media (max-width: 480px)': {
+      gap: '1rem',
+      padding: '0 0.5rem',
     }
   },
   aboutInfoSection: {
@@ -1748,14 +1757,14 @@ const styles = {
     border: '1px solid rgba(0, 0, 0, 0.05)',
     width: '100%',
     boxSizing: 'border-box',
-    margin: '0 auto', // Center the cards
-    '@media (max-width: 1024px)': {
-      maxWidth: '600px', // Maximum width on mobile
+    margin: '0 auto', // Center each section
+    '@media (max-width: 768px)': {
       padding: '1.5rem',
+      width: '100%', // Ensure full width on mobile
+      maxWidth: '100%', // Remove any max-width constraints
     },
     '@media (max-width: 480px)': {
       padding: '1.25rem',
-      margin: '0.75rem auto',
     }
   },
   aboutIconSection: {
@@ -1816,13 +1825,15 @@ const styles = {
   },
   whyChooseGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
+    gridTemplateColumns: 'repeat(2, 1fr)', // Show 2 cards per row by default
     gap: '1.5rem',
-    '@media (max-width: 1024px)': {
-      gridTemplateColumns: '1fr', // Single column on tablet and below
+    width: '100%',
+    '@media (min-width: 1024px)': { // Four columns only on larger screens
+      gridTemplateColumns: 'repeat(4, 1fr)',
+    },
+    '@media (max-width: 480px)': { // Single column only on very small screens
+      gridTemplateColumns: '1fr',
       gap: '1rem',
-      maxWidth: '600px', // Maximum width on mobile
-      margin: '0 auto', // Center the grid
     }
   },
   whyChooseCard: {
