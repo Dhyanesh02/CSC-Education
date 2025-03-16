@@ -11,6 +11,20 @@ const Home = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [currentBrochureIndex, setCurrentBrochureIndex] = useState(0);
+  
+  const brochureImages = [
+    "/images/brochures/images1.jpg",
+    "/images/brochures/images2.jpg",
+    "/images/brochures/images3.jpg",
+    "/images/brochures/images4.jpg",
+    "/images/brochures/images5.jpg",
+    "/images/brochures/images6.jpg",
+    "/images/brochures/images7.jpg",
+    "/images/brochures/images8.jpg",
+    "/images/brochures/images9.jpg",
+    "/images/brochures/images10.jpg",
+  ];
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -20,6 +34,7 @@ const Home = () => {
     email: 'csc.sureshbaskaran@gmail.com',
     phone: '+91 99427 25757',
   };
+  
   const stats = [
       { icon: "👨‍🎓", count: "5K+", label: "Students taught" },
     { icon: "📋", count: "50+", label: "Institutions" },
@@ -50,6 +65,28 @@ const Home = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBrochureIndex((prevIndex) => 
+        prevIndex === brochureImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(timer);
+  }, [brochureImages.length]); // Add the missing dependency
+
+  const handleBrochureClick = (direction) => {
+    if (direction === 'next') {
+      setCurrentBrochureIndex((prevIndex) => 
+        prevIndex === brochureImages.length - 1 ? 0 : prevIndex + 1
+      );
+    } else {
+      setCurrentBrochureIndex((prevIndex) => 
+        prevIndex === 0 ? brochureImages.length - 1 : prevIndex - 1
+      );
+    }
+  };
 
   const handleNavClick = (section) => {
     setActiveSection(section);
@@ -262,142 +299,8 @@ const Home = () => {
         ))}
       </div>
 
-      {/* Updated Advertisement Section */}
-      <div style={styles.advertisementSection}>
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          style={styles.adContainer}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            style={styles.adHeaderContainer}
-          >
-            <motion.h2
-              animate={{
-                scale: [1, 1.05, 1],
-                textShadow: [
-                  "2px 2px 4px rgba(0,0,0,0.1)",
-                  "4px 4px 8px rgba(0,0,0,0.2)",
-                  "2px 2px 4px rgba(0,0,0,0.1)"
-                ]
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              style={styles.adMainTitle}
-            >
-              12th SAT - 2025
-            </motion.h2>
-            <div style={styles.adTitleDecoration}></div>
-          </motion.div>
-          <div style={styles.adContent}>
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              style={styles.adScholarshipContainer}
-            >
-              <motion.div
-                animate={{
-                  x: [0, -20, 0],
-                  y: [0, -10, 0],
-                  rotate: [0, -5, 0]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                whileHover={{ scale: 1.05 }}
-                style={styles.adScholarshipBox}
-              >
-                <h3 style={styles.adScholarshipTitle}>YOU CAN</h3>
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  style={styles.adScholarshipAmount}
-                >
-                  Win 75%
-                </motion.div>
-                <div style={styles.adScholarshipLabel}>Scholarship</div>
-              </motion.div>
-
-              <motion.div
-                animate={{
-                  y: [0, -15, 0],
-                  scale: [1, 1.05, 1]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                whileHover={{ scale: 1.1 }}
-                style={styles.adExamBox}
-              >
-                <div style={styles.adExamLabel}>EXAM DATE</div>
-                <motion.div
-                  animate={{ 
-                    textShadow: [
-                      "0 0 5px rgba(255,255,255,0.5)",
-                      "0 0 15px rgba(255,255,255,0.8)",
-                      "0 0 5px rgba(255,255,255,0.5)"
-                    ]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div style={styles.adExamDate}>MARCH</div>
-                  <div style={styles.adExamDay}>27</div>
-                  <div style={styles.adExamDay}>THURSDAY</div>
-                </motion.div>
-              </motion.div>
-
-              <motion.div
-                animate={{
-                  x: [0, 20, 0],
-                  y: [0, -10, 0],
-                  rotate: [0, 5, 0]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                whileHover={{ scale: 1.05 }}
-                style={styles.adScholarshipBox}
-              >
-                <h3 style={styles.adScholarshipTitle}>YOU CAN</h3>
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  style={styles.adScholarshipAmount}
-                >
-                  Win 75%
-                </motion.div>
-                <div style={styles.adScholarshipLabel}>Scholarship</div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </motion.div>
-      </div>
+      {/* Add the brochure slider here */}
+      {renderBrochureSlider()}
 
       <div style={styles.coursesSection}>
         <motion.div
@@ -591,7 +494,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             style={styles.certificationBadge}
           >
-            ISO 9001:2000 Certified
+            ISO 9001:2015 Certified
           </motion.span>
         </p>
       </motion.div>
@@ -614,7 +517,7 @@ const Home = () => {
                   whileHover={{ scale: 1.05 }}
                   style={styles.highlightedText}
                 >
-                  ISO 9001:2000 Certified Institution
+                  ISO 9001:2015 Certified Institution
                 </motion.span>{' '}
                 dedicated to empowering students with cutting-edge technology education.
               </div>
@@ -743,6 +646,94 @@ const Home = () => {
     }
   };
 
+  const renderBrochureSlider = () => (
+    <div style={styles.brochureSliderContainer}>
+      <div style={styles.sliderButtonWrapper}>
+        <motion.button
+          whileHover={{ 
+            scale: 1.1,
+            backgroundColor: '#233876',
+            boxShadow: '0 0 20px rgba(30, 58, 138, 0.4)'
+          }}
+          whileTap={{ scale: 0.9, backgroundColor: '#1e3a8a' }}
+          style={styles.sliderButton}
+          onClick={() => handleBrochureClick('prev')}
+        >
+          <motion.span
+            animate={{
+              x: [-3, 0, -3],
+              opacity: [0.8, 1, 0.8]
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            ←
+          </motion.span>
+        </motion.button>
+      </div>
+
+      <div style={styles.brochureWrapper}>
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={currentBrochureIndex}
+            src={brochureImages[currentBrochureIndex]}
+            initial={{ opacity: 0, scale: 0.9, rotateY: -10 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1, 
+              rotateY: 0,
+              transition: {
+                duration: 0.5,
+                ease: "easeOut"
+              }
+            }}
+            exit={{ 
+              opacity: 0, 
+              scale: 0.9, 
+              rotateY: 10,
+              transition: {
+                duration: 0.3,
+                ease: "easeIn"
+              }
+            }}
+            style={styles.brochureImage}
+            alt={`Brochure ${currentBrochureIndex + 1}`}
+          />
+        </AnimatePresence>
+      </div>
+
+      <div style={styles.sliderButtonWrapper}>
+        <motion.button
+          whileHover={{ 
+            scale: 1.1,
+            backgroundColor: '#233876',
+            boxShadow: '0 0 20px rgba(30, 58, 138, 0.4)'
+          }}
+          whileTap={{ scale: 0.9, backgroundColor: '#1e3a8a' }}
+          style={styles.sliderButton}
+          onClick={() => handleBrochureClick('next')}
+        >
+          <motion.span
+            animate={{
+              x: [3, 0, 3],
+              opacity: [0.8, 1, 0.8]
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            →
+          </motion.span>
+        </motion.button>
+      </div>
+    </div>
+  );
+
   return (
     <div style={styles.container}>
       <header style={styles.header}>
@@ -750,7 +741,7 @@ const Home = () => {
           <span style={styles.logoText}>CSC</span>
           <div style={styles.logoSubtext}>
             <div>COMPUTER SOFTWARE COLLEGE</div>
-            <div style={styles.logoSmallText}>AN ISO 9001:2000 CERTIFIED INSTITUTION</div>
+            <div style={styles.logoSmallText}>AN ISO 9001:2015 CERTIFIED INSTITUTION</div>
           </div>
         </div>
         
@@ -932,7 +923,7 @@ const Home = () => {
           <div style={styles.footerLogo}>
             <div style={styles.footerLogoText}>CSC</div>
             <p style={styles.footerDescription}>
-              Computer Software College Kumarapalayam. An ISO 9001:2000 Certified Institution.
+              Computer Software College Kumarapalayam. An ISO 9001:2015 Certified Institution.
             </p>
           </div>
           <div style={styles.footerLinks}>
@@ -1848,7 +1839,7 @@ const styles = {
       maxWidth: '600px', // Maximum width on mobile
       margin: '0 auto', // Center the cards
       padding: '1.25rem',
-    },
+      },
     '@media (max-width: 480px)': {
       padding: '1rem',
     }
@@ -1893,7 +1884,7 @@ const styles = {
   },
   ratingStars: {
     color: '#ffde59',
-    fontSize: '1.5rem',
+      fontSize: '1.5rem',
     '@media (max-width: 480px)': {
       fontSize: '1.25rem'
     }
@@ -2469,6 +2460,132 @@ const styles = {
     courseContent: {
       padding: '1rem',
     },
+  },
+  brochureSliderContainer: {
+    position: 'relative',
+    width: '100%',
+    maxWidth: '1000px',
+    margin: '2rem auto 4rem',
+    padding: '0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '0.5rem',
+    '@media (max-width: 768px)': {
+      margin: '1rem auto 3.5rem',
+      gap: '0.3rem',
+      padding: '0 2rem', // Add padding to prevent buttons from touching screen edges
+    }
+  },
+  sliderButtonWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: '44px', // Ensure minimum width for button container
+    zIndex: 3,
+    '@media (max-width: 768px)': {
+      minWidth: '38px',
+    },
+    '@media (max-width: 480px)': {
+      minWidth: '32px',
+    }
+  },
+  brochureWrapper: {
+    width: '100%',
+    height: '450px',
+    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: '20px',
+    background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
+    boxShadow: '10px 10px 20px #d1d1d1, -10px -10px 20px #ffffff',
+    margin: '0 0.5rem', // Add margin to create space between buttons and image
+    '@media (max-width: 1024px)': {
+      height: '350px',
+    },
+    '@media (max-width: 768px)': {
+      height: '280px',
+      borderRadius: '15px',
+      margin: '0 0.3rem', // Reduce margin on mobile
+    },
+    '@media (max-width: 480px)': {
+      height: '220px',
+      borderRadius: '12px',
+    }
+  },
+  sliderButton: {
+    backgroundColor: '#1e3a8a',
+    background: 'linear-gradient(145deg, #233876, #1e3a8a)',
+    color: 'white',
+    border: 'none',
+    borderRadius: '50%',
+    width: '44px',
+    height: '44px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    fontSize: '1.5rem',
+    zIndex: 2,
+    boxShadow: '4px 4px 8px rgba(0,0,0,0.2), -2px -2px 6px rgba(255,255,255,0.1)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    '@media (max-width: 768px)': {
+      width: '38px',
+      height: '38px',
+      fontSize: '1.2rem',
+    },
+    '@media (max-width: 480px)': {
+      width: '32px',
+      height: '32px',
+      fontSize: '1rem',
+    }
+  },
+  brochureImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
+    padding: '0.5rem',
+    boxSizing: 'border-box',
+    background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%)',
+    transition: 'transform 0.3s ease',
+    '&:hover': {
+      transform: 'scale(1.02)',
+    }
+  },
+  brochureDots: {
+    position: 'absolute',
+    bottom: '1rem',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    display: 'flex',
+    gap: '0.6rem',
+    zIndex: 2,
+    padding: '0.4rem 0.8rem',
+    borderRadius: '20px',
+    background: 'linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7))',
+    backdropFilter: 'blur(5px)',
+    boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+    '@media (max-width: 480px)': {
+      padding: '0.3rem 0.6rem',
+      gap: '0.4rem',
+      bottom: '0.5rem' // Moved up slightly on mobile
+    }
+  },
+  dot: {
+    width: '10px',
+    height: '10px',
+    borderRadius: '50%',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    border: '2px solid #1e3a8a',
+    background: 'white',
+    '&:hover': {
+      transform: 'scale(1.2)',
+      backgroundColor: '#ffde59',
+    },
+    '@media (max-width: 480px)': {
+      width: '8px',
+      height: '8px',
+    }
   },
 };
 
