@@ -12,7 +12,7 @@ const AdmitCardQR = () => {
       includeMargin={true}
       renderAs="svg"
       imageSettings={{
-        src: "/images/csc-logo-small.png",
+        src: "/images/brochures/WhatsApp Image 2025-03-19 at 18.33.32_0ba4b9f4.jpg",
         x: undefined,
         y: undefined,
         height: 24,
