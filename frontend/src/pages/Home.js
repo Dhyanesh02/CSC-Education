@@ -894,6 +894,30 @@ const Home = () => {
         </div>
       </header>
       
+      {/* Add Scrolling Advertisement Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={styles.scrollingAd}
+      >
+        <div style={styles.scrollingAdContent}>
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: "-100%" }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear",
+              repeatType: "loop"
+            }}
+            style={styles.scrollingText}
+          >
+            🎉 SAT Exam 2025 - March 27th - 75% Scholarship Offer! Limited Time Only! 🎉 &nbsp;&nbsp;&nbsp;&nbsp;
+          </motion.div>
+        </div>
+      </motion.div>
+
       {/* Update mobile menu styles inline */}
       <AnimatePresence>
         {mobileMenuOpen && windowWidth <= 900 && (
@@ -2176,7 +2200,7 @@ const styles = {
       overflowX: 'hidden',
     },
     header: {
-      padding: '0.8rem 1rem',
+      padding: '1rem 1.5rem',
       justifyContent: 'space-between',
       alignItems: 'center',
       flexDirection: 'row',
@@ -2185,13 +2209,12 @@ const styles = {
     },
     logo: {
       marginBottom: '0',
-      maxWidth: '180px',
     },
     logoText: {
-      fontSize: '1.4rem',
+      fontSize: '1.6rem',
     },
     logoSubtext: {
-      fontSize: '0.6rem',
+      fontSize: '0.65rem',
     },
     logoSmallText: {
       fontSize: '0.5rem',
@@ -2202,57 +2225,72 @@ const styles = {
     hamburgerMenu: {
       display: 'flex',
     },
+    mobileNav: {
+      display: 'flex',
+      boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+    },
+    activeNavItem: {
+      borderBottom: 'none',
+      color: '#ffde59',
+    },
     hero: {
-      padding: '1.5rem 1rem',
-      minHeight: 'auto',
+      padding: '2rem 1.5rem',
+      width: '100%',
+      boxSizing: 'border-box',
     },
     title: {
       fontSize: '1.8rem',
-      lineHeight: '1.3',
-      marginBottom: '0.8rem',
-      padding: '0 0.5rem',
+      lineHeight: '1.4',
+      marginBottom: '1rem',
     },
     subtitle: {
-      fontSize: '1.2rem',
-      lineHeight: '1.4',
-      marginBottom: '0.8rem',
-      padding: '0 0.5rem',
+      fontSize: '1.3rem',
+      lineHeight: '1.5',
+      marginBottom: '1rem',
     },
     quote: {
-      fontSize: '0.9rem',
+      fontSize: '0.95rem',
+      maxWidth: '100%',
       lineHeight: '1.5',
-      marginBottom: '1.2rem',
-      padding: '0 0.5rem',
+      marginBottom: '1.5rem',
     },
     exploreButton: {
-      padding: '0.7rem 1.8rem',
-      fontSize: '0.85rem',
-      minWidth: '160px',
+      padding: '0.8rem 2rem',
+      fontSize: '0.9rem',
+      minWidth: '180px',
     },
     statsContainer: {
-      gap: '1rem',
-      padding: '1rem',
-      flexDirection: 'column',
-      alignItems: 'center',
+      gap: '2rem',
+      padding: '1.5rem 1rem',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
       width: '100%',
       boxSizing: 'border-box',
     },
     statItem: {
-      minWidth: '90px',
-      width: '100%',
-      maxWidth: '250px',
-      padding: '0.8rem',
-      backgroundColor: 'rgba(255, 255, 255, 0.05)',
-      borderRadius: '10px',
+      minWidth: '100px',
     },
     statIcon: {
-      fontSize: '2rem',
+      fontSize: '2.5rem',
     },
     statCount: {
-      fontSize: '1.4rem',
+      fontSize: '1.5rem',
     },
     statLabel: {
-      fontSize: '0.85rem',
+      fontSize: '0.9rem',
+    },
+    coursesGrid: {
+      gridTemplateColumns: '1fr',
+      gap: '1.5rem',
+      width: '100%',
+    },
+    coursesPageGrid: {
+      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: '1.5rem',
+      padding: '0 1rem',
+    },
+    courseCard: {
+      maxWidth: '100%',
     },
     coursesSection: {
       padding: '2rem 1rem',
@@ -2263,104 +2301,65 @@ const styles = {
       fontSize: '1rem',
       padding: '0.5rem 1.5rem',
     },
-    coursesGrid: {
-      gridTemplateColumns: '1fr',
-      gap: '1.2rem',
-      padding: '0 0.5rem',
-    },
-    courseCard: {
-      maxWidth: '100%',
-      margin: '0 auto',
-    },
-    courseImageWrapper: {
-      paddingTop: '55%',
-    },
-    courseTitle: {
-      fontSize: '1.1rem',
-      padding: '0.5rem',
-    },
     viewAllButton: {
       padding: '0.8rem 2rem',
       fontSize: '0.9rem',
       width: 'auto',
-      minWidth: '180px',
-      marginTop: '2rem',
-    },
-    footer: {
-      padding: '2rem 1rem 1rem',
-      width: '100%',
-      boxSizing: 'border-box',
+      minWidth: '200px',
     },
     footerTop: {
-      gap: '1.5rem',
       flexDirection: 'column',
-      alignItems: 'center',
-      textAlign: 'center',
+      alignItems: 'flex-start',
+      gap: '2rem',
+    },
+    footerLinks: {
+      gap: '2rem',
+      flexDirection: 'column',
     },
     footerLogo: {
       maxWidth: '100%',
     },
     footerLogoText: {
-      fontSize: '1.4rem',
+      fontSize: '1.6rem',
     },
     footerDescription: {
-      fontSize: '0.85rem',
-    },
-    footerLinks: {
-      gap: '2rem',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    footerSection: {
-      minWidth: 'auto',
-      width: '100%',
-      maxWidth: '300px',
+      fontSize: '0.9rem',
     },
     footerTitle: {
       fontSize: '0.9rem',
     },
     footerListItem: {
-      fontSize: '0.85rem',
+      fontSize: '0.9rem',
     },
     contactItem: {
-      fontSize: '0.85rem',
+      fontSize: '0.9rem',
     },
     contactIcon: {
-      fontSize: '1.1rem',
-    },
-    copyright: {
-      fontSize: '0.75rem',
-    },
-    brochureSliderContainer: {
-      margin: '1rem auto 3rem',
-      padding: '0 1rem',
-    },
-    brochureWrapper: {
-      height: '250px',
-      margin: '0 0.3rem',
-    },
-    sliderButton: {
-      width: '36px',
-      height: '36px',
       fontSize: '1.2rem',
     },
-    qrCodeSection: {
-      padding: '1.5rem 0.8rem',
+    advertisementSection: {
+      padding: '1rem',
     },
-    qrCodeContainer: {
-      flexDirection: 'column',
+    adContainer: {
+      padding: '1rem',
+    },
+    adMainTitle: {
+      fontSize: '1.5rem',
+      letterSpacing: '1px',
+    },
+    adTitleDecoration: {
+      width: '50px',
+      height: '3px',
+    },
+    aboutGrid: {
+      gridTemplateColumns: '1fr',
+    },
+    whyChooseGrid: {
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gap: '1rem',
+    },
+    aboutInfoSection: {
       padding: '1.5rem',
-      gap: '1.5rem',
-    },
-    qrCodeWrapper: {
-      width: '160px',
-      height: '160px',
-    },
-    qrCodeTitle: {
-      fontSize: '1.4rem',
-    },
-    qrCodeDescription: {
-      fontSize: '0.95rem',
     },
   },
   '@media (max-width: 480px)': {
@@ -2369,173 +2368,398 @@ const styles = {
       overflowX: 'hidden',
     },
     header: {
-      padding: '0.6rem 0.8rem',
+      padding: '0.8rem 1rem',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row',
     },
     logo: {
-      maxWidth: '150px',
+      marginBottom: '0',
     },
     logoText: {
-      fontSize: '1.2rem',
+      fontSize: '1.4rem',
     },
     logoSubtext: {
-      fontSize: '0.5rem',
+      fontSize: '0.55rem',
     },
     logoSmallText: {
-      fontSize: '0.4rem',
+      fontSize: '0.45rem',
+    },
+    nav: {
+      display: 'none',
+    },
+    hamburgerMenu: {
+      display: 'flex',
     },
     hero: {
-      padding: '1.2rem 0.8rem',
+      padding: '1.5rem 1rem',
     },
     title: {
       fontSize: '1.5rem',
-      lineHeight: '1.2',
-      marginBottom: '0.6rem',
+      lineHeight: '1.3',
+      marginBottom: '0.8rem',
     },
     subtitle: {
-      fontSize: '1rem',
-      lineHeight: '1.3',
-      marginBottom: '0.6rem',
+      fontSize: '1.1rem',
+      lineHeight: '1.4',
+      marginBottom: '0.8rem',
     },
     quote: {
-      fontSize: '0.8rem',
-      lineHeight: '1.4',
-      marginBottom: '1rem',
+      fontSize: '0.85rem',
+      lineHeight: '1.5',
+      marginBottom: '1.2rem',
     },
     exploreButton: {
-      padding: '0.6rem 1.5rem',
-      fontSize: '0.8rem',
-      minWidth: '140px',
+      padding: '0.7rem 1.8rem',
+      fontSize: '0.85rem',
+      minWidth: '160px',
     },
     statsContainer: {
-      gap: '0.8rem',
-      padding: '0.8rem',
+      gap: '1.5rem',
+      padding: '1rem',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '100%',
+      boxSizing: 'border-box',
     },
     statItem: {
-      padding: '0.6rem',
+      minWidth: '90px',
     },
     statIcon: {
-      fontSize: '1.8rem',
+      fontSize: '2rem',
     },
     statCount: {
       fontSize: '1.2rem',
     },
     statLabel: {
-      fontSize: '0.75rem',
+      fontSize: '0.8rem',
     },
     coursesSection: {
-      padding: '1.5rem 0.8rem',
+      padding: '1.5rem 1rem',
+      width: '100%',
+      boxSizing: 'border-box',
     },
     sectionHeader: {
       fontSize: '0.9rem',
       padding: '0.4rem 1.2rem',
     },
-    coursesGrid: {
-      gap: '1rem',
-      padding: '0 0.3rem',
-    },
     courseCard: {
-      maxHeight: '300px',
-    },
-    courseImageWrapper: {
-      paddingTop: '50%',
+      maxWidth: '100%',
     },
     courseTitle: {
       fontSize: '1rem',
-      padding: '0.4rem',
+    },
+    courseDescription: {
+      fontSize: '0.85rem',
     },
     viewAllButton: {
-      padding: '0.7rem 1.5rem',
-      fontSize: '0.8rem',
-      minWidth: '160px',
-      marginTop: '1.5rem',
+      padding: '0.7rem 1.8rem',
+      fontSize: '0.85rem',
+      width: 'auto',
+      minWidth: '180px',
     },
     footer: {
-      padding: '1.5rem 0.8rem 1rem',
+      padding: '2rem 1rem 1rem',
+      width: '100%',
+      boxSizing: 'border-box',
+    },
+    footerTop: {
+      gap: '1.5rem',
     },
     footerLogoText: {
-      fontSize: '1.2rem',
+      fontSize: '1.4rem',
     },
     footerDescription: {
-      fontSize: '0.8rem',
+      fontSize: '0.85rem',
     },
     footerTitle: {
       fontSize: '0.85rem',
     },
     footerListItem: {
-      fontSize: '0.8rem',
+      fontSize: '0.85rem',
     },
     contactItem: {
-      fontSize: '0.8rem',
+      fontSize: '0.85rem',
     },
     contactIcon: {
-      fontSize: '1rem',
+      fontSize: '1.1rem',
     },
     copyright: {
-      fontSize: '0.7rem',
+      fontSize: '0.75rem',
     },
-    brochureSliderContainer: {
-      margin: '0.8rem auto 2.5rem',
-      padding: '0 0.8rem',
+    advertisementSection: {
+      padding: '0.8rem',
     },
-    brochureWrapper: {
-      height: '200px',
-      margin: '0 0.2rem',
+    adContainer: {
+      padding: '1rem',
     },
-    sliderButton: {
+    adMainTitle: {
+      fontSize: '1.5rem',
+      letterSpacing: '1px',
+    },
+    adTitleDecoration: {
+      width: '50px',
+      height: '3px',
+    },
+    aboutGrid: {
+      gridTemplateColumns: '1fr',
+    },
+    whyChooseGrid: {
+      gridTemplateColumns: '1fr',
+    },
+    aboutTitle: {
+      fontSize: '2rem',
+    },
+    aboutSubheading: {
+      fontSize: '1rem',
+    },
+    whyChooseCard: {
+      padding: '1.5rem',
+    },
+    coursesPageGrid: {
+      gridTemplateColumns: '1fr',
+      gap: '1.5rem',
+      padding: '0 1rem',
+    },
+    courseContent: {
+      padding: '1rem',
+    },
+  },
+  brochureSliderContainer: {
+    position: 'relative',
+    width: '100%',
+    maxWidth: '1000px',
+    margin: '2rem auto 4rem',
+    padding: '0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '0.5rem',
+    '@media (max-width: 768px)': {
+      margin: '1rem auto 3.5rem',
+      gap: '0.3rem',
+      padding: '0 2rem', // Add padding to prevent buttons from touching screen edges
+    }
+  },
+  sliderButtonWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: '44px', // Ensure minimum width for button container
+    zIndex: 3,
+    '@media (max-width: 768px)': {
+      minWidth: '38px',
+    },
+    '@media (max-width: 480px)': {
+      minWidth: '32px',
+    }
+  },
+  brochureWrapper: {
+    width: '100%',
+    height: '450px',
+    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: '20px',
+    background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
+    boxShadow: '10px 10px 20px #d1d1d1, -10px -10px 20px #ffffff',
+    margin: '0 0.5rem', // Add margin to create space between buttons and image
+    '@media (max-width: 1024px)': {
+      height: '350px',
+    },
+    '@media (max-width: 768px)': {
+      height: '280px',
+      borderRadius: '15px',
+      margin: '0 0.3rem', // Reduce margin on mobile
+    },
+    '@media (max-width: 480px)': {
+      height: '220px',
+      borderRadius: '12px',
+    }
+  },
+  sliderButton: {
+    backgroundColor: '#1e3a8a',
+    background: 'linear-gradient(145deg, #233876, #1e3a8a)',
+    color: 'white',
+    border: 'none',
+    borderRadius: '50%',
+    width: '44px',
+    height: '44px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    fontSize: '1.5rem',
+    zIndex: 2,
+    boxShadow: '4px 4px 8px rgba(0,0,0,0.2), -2px -2px 6px rgba(255,255,255,0.1)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    '@media (max-width: 768px)': {
+      width: '38px',
+      height: '38px',
+      fontSize: '1.2rem',
+    },
+    '@media (max-width: 480px)': {
       width: '32px',
       height: '32px',
       fontSize: '1rem',
+    }
+  },
+  brochureImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
+    padding: '0.5rem',
+    boxSizing: 'border-box',
+    background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%)',
+    transition: 'transform 0.3s ease',
+    '&:hover': {
+      transform: 'scale(1.02)',
+    }
+  },
+  brochureDots: {
+    position: 'absolute',
+    bottom: '1rem',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    display: 'flex',
+    gap: '0.6rem',
+    zIndex: 2,
+    padding: '0.4rem 0.8rem',
+    borderRadius: '20px',
+    background: 'linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7))',
+    backdropFilter: 'blur(5px)',
+    boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+    '@media (max-width: 480px)': {
+      padding: '0.3rem 0.6rem',
+      gap: '0.4rem',
+      bottom: '0.5rem' // Moved up slightly on mobile
+    }
+  },
+  dot: {
+    width: '10px',
+    height: '10px',
+    borderRadius: '50%',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    border: '2px solid #1e3a8a',
+    background: 'white',
+    '&:hover': {
+      transform: 'scale(1.2)',
+      backgroundColor: '#ffde59',
     },
-    qrCodeSection: {
+    '@media (max-width: 480px)': {
+      width: '8px',
+      height: '8px',
+    }
+  },
+  qrCodeSection: {
+    padding: '2rem 1rem',
+    backgroundColor: '#ffffff',
+    width: '100%',
+    boxSizing: 'border-box',
+    marginBottom: '2rem',
+    '@media (max-width: 768px)': {
+      padding: '1.5rem 0.8rem',
+    },
+    '@media (max-width: 480px)': {
       padding: '1rem 0.5rem',
-    },
-    qrCodeContainer: {
-      padding: '1rem',
-      gap: '1rem',
-    },
-    qrCodeWrapper: {
-      width: '140px',
-      height: '140px',
-    },
-    qrCodeTitle: {
-      fontSize: '1.2rem',
-    },
-    qrCodeDescription: {
-      fontSize: '0.85rem',
-    },
+    }
   },
-  // Add specific device breakpoints
-  '@media (max-width: 414px)': { // iPhone 6/7/8 Plus
-    title: {
-      fontSize: '1.4rem',
-    },
-    subtitle: {
-      fontSize: '1.1rem',
-    },
+  qrCodeContainer: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '2rem',
+    padding: '2rem',
+    backgroundColor: '#f8f9fa',
+    borderRadius: '15px',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)',
+    '@media (max-width: 768px)': {
+      flexDirection: 'column',
+      padding: '1.5rem',
+      gap: '1.5rem',
+    }
   },
-  '@media (max-width: 375px)': { // iPhone 6/7/8
-    title: {
+  qrCodeWrapper: {
+    width: '200px',
+    height: '200px',
+    padding: '1rem',
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '@media (max-width: 768px)': {
+      width: '180px',
+      height: '180px',
+    },
+    '@media (max-width: 480px)': {
+      width: '150px',
+      height: '150px',
+    }
+  },
+  qrCodeImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
+  },
+  qrCodeText: {
+    textAlign: 'center',
+    maxWidth: '300px',
+  },
+  qrCodeTitle: {
+    fontSize: '1.8rem',
+    color: '#1e3a8a',
+    marginBottom: '1rem',
+    '@media (max-width: 768px)': {
+      fontSize: '1.5rem',
+    },
+    '@media (max-width: 480px)': {
       fontSize: '1.3rem',
-    },
-    subtitle: {
+    }
+  },
+  qrCodeDescription: {
+    fontSize: '1.1rem',
+    color: '#666',
+    margin: 0,
+    '@media (max-width: 768px)': {
       fontSize: '1rem',
     },
-  },
-  '@media (max-width: 360px)': { // Samsung Galaxy S5
-    title: {
-      fontSize: '1.2rem',
-    },
-    subtitle: {
-      fontSize: '0.95rem',
-    },
-  },
-  '@media (max-width: 320px)': { // iPhone 5/SE
-    title: {
-      fontSize: '1.1rem',
-    },
-    subtitle: {
+    '@media (max-width: 480px)': {
       fontSize: '0.9rem',
+    }
+  },
+  scrollingAd: {
+    backgroundColor: '#ffde59',
+    color: '#1e3a8a',
+    padding: '0.5rem 0',
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
+    boxSizing: 'border-box',
+    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+    zIndex: 999,
+  },
+  scrollingAdContent: {
+    width: '100%',
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  scrollingText: {
+    whiteSpace: 'nowrap',
+    fontSize: '1.1rem',
+    fontWeight: 'bold',
+    padding: '0.5rem 0',
+    display: 'inline-block',
+    width: 'auto',
+    '@media (max-width: 768px)': {
+      fontSize: '1rem',
     },
+    '@media (max-width: 480px)': {
+      fontSize: '0.9rem',
+    }
   },
 };
 
