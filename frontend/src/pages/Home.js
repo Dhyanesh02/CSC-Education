@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import config from '../config/config.js';
+import AdmitCardQR from '../components/QRCode';
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -37,7 +38,7 @@ const Home = () => {
   
   const stats = [
       { icon: "👨‍🎓", count: "5K+", label: "Students taught" },
-    { icon: "📋", count: "50+", label: "Institutions" },
+    { icon: "📋", count: "360+", label: "Institutions" },
     { icon: "📚", count: "20+", label: "Courses" },
   ];
 
@@ -301,6 +302,34 @@ const Home = () => {
 
       {/* Add the brochure slider here */}
       {renderBrochureSlider()}
+
+      {/* Add QR Code Section */}
+      <div style={styles.qrCodeSection}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={styles.qrCodeContainer}
+        >
+          <motion.div
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
+            style={styles.qrCodeWrapper}
+          >
+            <AdmitCardQR />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            style={styles.qrCodeText}
+          >
+            <h3 style={styles.qrCodeTitle}>Get Your Free Admit Card</h3>
+            <p style={styles.qrCodeDescription}>Scan the QR code to download your admit card instantly</p>
+          </motion.div>
+        </motion.div>
+      </div>
 
       <div style={styles.coursesSection}>
         <motion.div
@@ -2596,6 +2625,86 @@ const styles = {
     '@media (max-width: 480px)': {
       width: '8px',
       height: '8px',
+    }
+  },
+  qrCodeSection: {
+    padding: '2rem 1rem',
+    backgroundColor: '#ffffff',
+    width: '100%',
+    boxSizing: 'border-box',
+    marginBottom: '2rem',
+    '@media (max-width: 768px)': {
+      padding: '1.5rem 0.8rem',
+    },
+    '@media (max-width: 480px)': {
+      padding: '1rem 0.5rem',
+    }
+  },
+  qrCodeContainer: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '2rem',
+    padding: '2rem',
+    backgroundColor: '#f8f9fa',
+    borderRadius: '15px',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)',
+    '@media (max-width: 768px)': {
+      flexDirection: 'column',
+      padding: '1.5rem',
+      gap: '1.5rem',
+    }
+  },
+  qrCodeWrapper: {
+    width: '200px',
+    height: '200px',
+    padding: '1rem',
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '@media (max-width: 768px)': {
+      width: '180px',
+      height: '180px',
+    },
+    '@media (max-width: 480px)': {
+      width: '150px',
+      height: '150px',
+    }
+  },
+  qrCodeImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
+  },
+  qrCodeText: {
+    textAlign: 'center',
+    maxWidth: '300px',
+  },
+  qrCodeTitle: {
+    fontSize: '1.8rem',
+    color: '#1e3a8a',
+    marginBottom: '1rem',
+    '@media (max-width: 768px)': {
+      fontSize: '1.5rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.3rem',
+    }
+  },
+  qrCodeDescription: {
+    fontSize: '1.1rem',
+    color: '#666',
+    margin: 0,
+    '@media (max-width: 768px)': {
+      fontSize: '1rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '0.9rem',
     }
   },
 };
