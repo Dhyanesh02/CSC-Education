@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { motion } from 'framer-motion';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -13,12 +15,22 @@ const AdminLogin = () => {
     try {
       await login(email, password);
     } catch (error) {
-      alert(error.message);
+      toast.error('Invalid email or password. Please try again.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
 
   return (
     <div style={styles.container}>
+      <ToastContainer />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
