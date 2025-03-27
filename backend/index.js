@@ -4,7 +4,6 @@ const cors = require('cors');
 const connectDB = require('./db');
 const adminRoutes = require('./routes/adminRoutes');
 const courseRoutes = require('./routes/courseRoutes');
-const verificationRoutes = require('./routes/verificationRoutes');
 const path = require('path');
 const fs = require('fs');
 const app = express();
@@ -49,7 +48,6 @@ connectDB();
 // Routes
 app.use('/api/admin', adminRoutes);
 app.use('/api', courseRoutes);
-app.use('/api/verification', verificationRoutes);
 
 app.get('/', (req, res) => {
   res.send({

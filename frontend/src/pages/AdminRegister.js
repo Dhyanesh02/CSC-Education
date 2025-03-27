@@ -57,7 +57,7 @@ const AdminRegister = () => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/verification/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, verificationCode }),
+        body: JSON.stringify({ email, code: verificationCode }),
       });
 
       const data = await response.json();
