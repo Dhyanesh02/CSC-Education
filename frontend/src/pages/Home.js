@@ -1586,15 +1586,24 @@ const styles = {
     '@media (max-width: 768px)': {
       padding: '1rem',
       minHeight: '50px',
+      width: '100%',
+      boxSizing: 'border-box',
+      backgroundColor: 'white',
+      position: 'relative',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     '@media (max-width: 480px)': {
       padding: '0.8rem',
       minHeight: '45px',
-      position: 'relative',
-      bottom: 0,
       width: '100%',
       boxSizing: 'border-box',
-      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      backgroundColor: 'white',
+      position: 'relative',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     }
   },
   courseHeader: {
@@ -1611,10 +1620,15 @@ const styles = {
     fontWeight: 'bold',
     color: '#1e3a8a',
     textAlign: 'center',
+    width: '100%',
     '@media (max-width: 768px)': {
       fontSize: '1.1rem',
       lineHeight: '1.3',
       padding: '0.3rem 0',
+      display: 'block',
+      width: '100%',
+      color: '#1e3a8a',
+      textAlign: 'center'
     },
     '@media (max-width: 480px)': {
       fontSize: '1rem',
@@ -1622,6 +1636,8 @@ const styles = {
       padding: '0.2rem 0',
       display: 'block',
       width: '100%',
+      color: '#1e3a8a',
+      textAlign: 'center'
     }
   },
   viewAllButton: {
