@@ -1421,19 +1421,31 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    maxHeight: '350px', // Increased from 300px to 350px
+    maxHeight: '350px',
     margin: '0 auto',
     border: '1px solid rgba(0, 0, 0, 0.1)',
     '&:hover': {
       transform: 'translateY(-5px)',
       boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
     },
+    '@media (max-width: 768px)': {
+      maxHeight: '300px',
+    },
+    '@media (max-width: 480px)': {
+      maxHeight: '280px',
+    }
   },
   courseImageWrapper: {
     position: 'relative',
     width: '100%',
-    paddingTop: '60%', // Reduced from 65% to 60% to give more space for the title
+    paddingTop: '60%',
     overflow: 'hidden',
+    '@media (max-width: 768px)': {
+      paddingTop: '55%',
+    },
+    '@media (max-width: 480px)': {
+      paddingTop: '50%',
+    }
   },
   courseImageContainer: {
     position: 'absolute',
@@ -1449,11 +1461,20 @@ const styles = {
     objectPosition: 'center',
   },
   courseContent: {
-    padding: '1.2rem', // Increased from 1rem to 1.2rem
+    padding: '1.2rem',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: '60px', // Added minimum height for the content area
+    minHeight: '60px',
+    backgroundColor: 'white',
+    '@media (max-width: 768px)': {
+      padding: '1rem',
+      minHeight: '50px',
+    },
+    '@media (max-width: 480px)': {
+      padding: '0.8rem',
+      minHeight: '45px',
+    }
   },
   courseHeader: {
     display: 'flex',
@@ -1471,7 +1492,7 @@ const styles = {
     },
     '@media (max-width: 480px)': {
       fontSize: '1rem',
-    },
+    }
   },
   viewAllButton: {
     backgroundColor: '#1e3a8a',
