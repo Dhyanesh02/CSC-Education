@@ -13,6 +13,7 @@ const Home = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [currentBrochureIndex, setCurrentBrochureIndex] = useState(0);
+  const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
   
   const brochureImages = [
     "/images/brochures/images1.jpg",
@@ -40,6 +41,49 @@ const Home = () => {
       { icon: "👨‍🎓", count: "5K+", label: "Students taught" },
     { icon: "📋", count: "360+", label: "Institutions" },
     { icon: "📚", count: "20+", label: "Courses" },
+  ];
+
+  const reviews = [
+    {
+      id: 1,
+      name: "Ameeth Kumar",
+      rating: 5,
+      date: "a year ago",
+      review: "Very nice experience for me to learn programming languages. Classes were very nice and I liked it so much. All The topics were covered by the practical. The trainer gave me regular feedback during course. Thank you for giving a wonderful coaching. I would recommend to join students here.",
+      image: "https://via.placeholder.com/50" // Replace with actual student image if available
+    },
+    {
+      id: 2,
+      name: "Dhineshkumar M",
+      rating: 5,
+      date: "2 months ago",
+      review: "My experience in csc class was excellent and practically and step by step each and every transaction or words to be tell and i understand about all and excellent of service.",
+      image: "https://via.placeholder.com/50"
+    },
+    {
+      id: 3,
+      name: "Manokaran G",
+      rating: 5,
+      date: "3 months ago",
+      review: "Very good experience for me to learn Django framework.It helps me to improve my knowledge about web development ☺️ Thanks for the opportunity ✨",
+      image: "https://via.placeholder.com/50"
+    },
+    {
+      id: 4,
+      name: "Sabhithasree S",
+      rating: 5,
+      date: "a year ago",
+      review: "Classes were really nice. I liked it very much & good support provided by staffs. I recommend students to take up class here since its very nice place to learn. They are very supportive.Almost all the topics where covered with practical. Good institute to learn courses. The trainer gave me regular feedback during course. Thank you for giving a wonderful coaching.😊😊",
+      image: "https://via.placeholder.com/50"
+    },
+    {
+      id: 5,
+      name: "Nandhu Sadhu",
+      rating: 5,
+      date: "7 months ago",
+      review: "CSC is the best computer center Sangeetha Mam was too nice teaching to our students I like too in this class All Mam's are too good Class is very perfect",
+      image: "/frontend/public/csclogo.png"
+    },
   ];
 
   useEffect(() => {
@@ -76,6 +120,16 @@ const Home = () => {
 
     return () => clearInterval(timer);
   }, [brochureImages.length]); // Add the missing dependency
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentReviewIndex((prevIndex) => 
+        prevIndex === reviews.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000); // Change review every 5 seconds
+
+    return () => clearInterval(timer);
+  }, [reviews.length]);
 
   const handleBrochureClick = (direction) => {
     if (direction === 'next') {
@@ -300,10 +354,7 @@ const Home = () => {
         ))}
       </div>
 
-      {/* Add the brochure slider here */}
-      {renderBrochureSlider()}
-
-      {/* Add QR Code Section */}
+      {/* QR Code Section */}
       <div style={styles.qrCodeSection}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -330,6 +381,9 @@ const Home = () => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Brochure Slider */}
+      {renderBrochureSlider()}
 
       <div style={styles.coursesSection}>
         <motion.div
@@ -428,6 +482,66 @@ const Home = () => {
         >
           View All Courses
         </motion.button>
+      </div>
+
+      {/* Reviews Section */}
+      <div style={styles.reviewsSection}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={styles.reviewsContainer}
+        >
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            style={styles.reviewsTitle}
+          >
+            What Our Students Say
+          </motion.h2>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            style={styles.reviewsWrapper}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentReviewIndex}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5 }}
+                style={styles.reviewCard}
+              >
+                <div style={styles.reviewHeader}>
+                  <img
+                    src={reviews[currentReviewIndex].image}
+                    alt={reviews[currentReviewIndex].name}
+                    style={styles.reviewerImage}
+                  />
+                  <div style={styles.reviewerInfo}>
+                    <h3 style={styles.reviewerName}>{reviews[currentReviewIndex].name}</h3>
+                    <div style={styles.reviewStars}>
+                      {"★".repeat(reviews[currentReviewIndex].rating)}
+                      {"☆".repeat(5 - reviews[currentReviewIndex].rating)}
+                    </div>
+                    <p style={styles.reviewDate}>{reviews[currentReviewIndex].date}</p>
+                  </div>
+                </div>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  style={styles.reviewText}
+                >
+                  {reviews[currentReviewIndex].review}
+                </motion.p>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+        </motion.div>
       </div>
     </>
   );
@@ -1432,7 +1546,7 @@ const styles = {
       maxHeight: '300px',
     },
     '@media (max-width: 480px)': {
-      maxHeight: '280px',
+      maxHeight: '250px',
     }
   },
   courseImageWrapper: {
@@ -1441,10 +1555,10 @@ const styles = {
     paddingTop: '60%',
     overflow: 'hidden',
     '@media (max-width: 768px)': {
-      paddingTop: '55%',
+      paddingTop: '50%',
     },
     '@media (max-width: 480px)': {
-      paddingTop: '50%',
+      paddingTop: '45%',
     }
   },
   courseImageContainer: {
@@ -1467,6 +1581,8 @@ const styles = {
     alignItems: 'center',
     minHeight: '60px',
     backgroundColor: 'white',
+    position: 'relative',
+    zIndex: 1,
     '@media (max-width: 768px)': {
       padding: '1rem',
       minHeight: '50px',
@@ -1474,12 +1590,20 @@ const styles = {
     '@media (max-width: 480px)': {
       padding: '0.8rem',
       minHeight: '45px',
+      position: 'relative',
+      bottom: 0,
+      width: '100%',
+      boxSizing: 'border-box',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
     }
   },
   courseHeader: {
     display: 'flex',
     justifyContent: 'center',
     width: '100%',
+    '@media (max-width: 480px)': {
+      textAlign: 'center',
+    }
   },
   courseTitle: {
     margin: 0,
@@ -1489,9 +1613,15 @@ const styles = {
     textAlign: 'center',
     '@media (max-width: 768px)': {
       fontSize: '1.1rem',
+      lineHeight: '1.3',
+      padding: '0.3rem 0',
     },
     '@media (max-width: 480px)': {
       fontSize: '1rem',
+      lineHeight: '1.2',
+      padding: '0.2rem 0',
+      display: 'block',
+      width: '100%',
     }
   },
   viewAllButton: {
@@ -2546,6 +2676,336 @@ const styles = {
       padding: '1rem',
     },
   },
+  qrCodeSection: {
+    padding: '2rem 1rem',
+    backgroundColor: '#ffffff',
+    width: '100%',
+    boxSizing: 'border-box',
+    marginBottom: '2rem',
+    '@media (max-width: 768px)': {
+      padding: '1.5rem 0.8rem',
+    },
+    '@media (max-width: 480px)': {
+      padding: '1rem 0.5rem',
+    }
+  },
+  qrCodeContainer: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '2rem',
+    padding: '2rem',
+    backgroundColor: '#f8f9fa',
+    borderRadius: '15px',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)',
+    '@media (max-width: 768px)': {
+      flexDirection: 'column',
+      padding: '1.5rem',
+      gap: '1.5rem',
+    }
+  },
+  qrCodeWrapper: {
+    width: '200px',
+    height: '200px',
+    padding: '1rem',
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '@media (max-width: 768px)': {
+      width: '180px',
+      height: '180px',
+    },
+    '@media (max-width: 480px)': {
+      width: '150px',
+      height: '150px',
+    }
+  },
+  qrCodeImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
+  },
+  qrCodeText: {
+    textAlign: 'center',
+    maxWidth: '300px',
+  },
+  qrCodeTitle: {
+    fontSize: '1.8rem',
+    color: '#1e3a8a',
+    marginBottom: '1rem',
+    '@media (max-width: 768px)': {
+      fontSize: '1.5rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.3rem',
+    }
+  },
+  qrCodeDescription: {
+    fontSize: '1.1rem',
+    color: '#666',
+    margin: 0,
+    '@media (max-width: 768px)': {
+      fontSize: '1rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '0.9rem',
+    }
+  },
+  scrollingAd: {
+    backgroundColor: '#ffde59',
+    color: '#1e3a8a',
+    padding: '0.5rem 0',
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
+    boxSizing: 'border-box',
+    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+    zIndex: 999,
+  },
+  scrollingAdContent: {
+    width: '100%',
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  scrollingText: {
+    whiteSpace: 'nowrap',
+    fontSize: '1.1rem',
+    fontWeight: 'bold',
+    padding: '0.5rem 0',
+    display: 'inline-block',
+    width: 'auto',
+    '@media (max-width: 768px)': {
+      fontSize: '1rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '0.9rem',
+    }
+  },
+  reviewsSection: {
+    padding: '2rem 1rem',
+    backgroundColor: '#f8f9fa',
+    width: '100%',
+    boxSizing: 'border-box',
+    '@media (max-width: 768px)': {
+      padding: '1.5rem 0.8rem',
+    },
+    '@media (max-width: 480px)': {
+      padding: '1rem 0.5rem',
+    }
+  },
+  reviewsContainer: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    width: '100%',
+    boxSizing: 'border-box',
+    '@media (max-width: 768px)': {
+      padding: '1.5rem 0.8rem',
+    },
+    '@media (max-width: 480px)': {
+      padding: '1rem 0.5rem',
+    }
+  },
+  reviewsTitle: {
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    color: '#1e3a8a',
+    marginBottom: '2rem',
+    '@media (max-width: 768px)': {
+      fontSize: '2rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.8rem',
+    }
+  },
+  reviewsWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '2rem',
+    '@media (max-width: 768px)': {
+      flexDirection: 'column',
+    },
+    '@media (max-width: 480px)': {
+      gap: '1rem',
+    }
+  },
+  reviewCard: {
+    backgroundColor: 'white',
+    borderRadius: '20px',
+    overflow: 'hidden',
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    maxWidth: '800px',
+    margin: '0 auto',
+    border: '2px solid rgba(255, 222, 89, 0.3)',
+    background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
+    position: 'relative',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: '0 15px 35px rgba(0, 0, 0, 0.15)',
+      border: '2px solid #ffde59',
+    },
+    '&:before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: '6px',
+      background: 'linear-gradient(90deg, #ffde59, #1e3a8a)',
+      borderTopLeftRadius: '18px',
+      borderTopRightRadius: '18px',
+    },
+    '@media (max-width: 768px)': {
+      maxWidth: '600px',
+      borderRadius: '15px',
+      '&:before': {
+        borderTopLeftRadius: '13px',
+        borderTopRightRadius: '13px',
+      },
+    },
+    '@media (max-width: 480px)': {
+      maxWidth: '100%',
+      borderRadius: '12px',
+      '&:before': {
+        height: '4px',
+        borderTopLeftRadius: '10px',
+        borderTopRightRadius: '10px',
+      },
+    }
+  },
+  reviewHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '1.5rem',
+    padding: '2rem',
+    background: 'linear-gradient(135deg, rgba(255, 222, 89, 0.1) 0%, rgba(30, 58, 138, 0.05) 100%)',
+    borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
+    '@media (max-width: 768px)': {
+      padding: '1.5rem',
+      gap: '1rem',
+    },
+    '@media (max-width: 480px)': {
+      padding: '1rem',
+      gap: '0.8rem',
+    }
+  },
+  reviewerImage: {
+    width: '80px',
+    height: '80px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    border: '3px solid #ffde59',
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+    '@media (max-width: 768px)': {
+      width: '60px',
+      height: '60px',
+    },
+    '@media (max-width: 480px)': {
+      width: '50px',
+      height: '50px',
+      border: '2px solid #ffde59',
+    }
+  },
+  reviewerInfo: {
+    flex: 1,
+  },
+  reviewerName: {
+    fontSize: '1.4rem',
+    fontWeight: 'bold',
+    color: '#1e3a8a',
+    margin: '0 0 0.5rem 0',
+    '@media (max-width: 768px)': {
+      fontSize: '1.2rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1.1rem',
+    }
+  },
+  reviewStars: {
+    color: '#ffde59',
+    fontSize: '1.2rem',
+    textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    margin: '0.3rem 0',
+    '@media (max-width: 768px)': {
+      fontSize: '1.1rem',
+    },
+    '@media (max-width: 480px)': {
+      fontSize: '1rem',
+    }
+  },
+  reviewDate: {
+    fontSize: '0.9rem',
+    color: '#666',
+    margin: '0.3rem 0 0 0',
+    '@media (max-width: 480px)': {
+      fontSize: '0.8rem',
+    }
+  },
+  reviewText: {
+    padding: '2rem',
+    color: '#444',
+    fontSize: '1.1rem',
+    lineHeight: '1.6',
+    position: 'relative',
+    '&:before': {
+      content: '"""',
+      position: 'absolute',
+      top: '1rem',
+      left: '2rem',
+      fontSize: '4rem',
+      color: 'rgba(30, 58, 138, 0.1)',
+      fontFamily: 'Georgia, serif',
+      lineHeight: '1',
+    },
+    '@media (max-width: 768px)': {
+      padding: '1.5rem',
+      fontSize: '1rem',
+      '&:before': {
+        fontSize: '3rem',
+        top: '0.8rem',
+        left: '1.5rem',
+      },
+    },
+    '@media (max-width: 480px)': {
+      padding: '1rem',
+      fontSize: '0.9rem',
+      '&:before': {
+        fontSize: '2.5rem',
+        top: '0.6rem',
+        left: '1rem',
+      },
+    }
+  },
+  qrAndBrochureContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '2rem',
+    padding: '2rem',
+    maxWidth: '1400px',
+    margin: '0 auto',
+    alignItems: 'center',
+    '@media (max-width: 1024px)': {
+      flexDirection: 'column',
+      padding: '1.5rem',
+    },
+    '@media (max-width: 768px)': {
+      padding: '1rem',
+      gap: '1.5rem',
+    },
+    '@media (max-width: 480px)': {
+      padding: '0.5rem',
+      gap: '1rem',
+    }
+  },
   brochureSliderContainer: {
     position: 'relative',
     width: '100%',
@@ -2559,7 +3019,7 @@ const styles = {
     '@media (max-width: 768px)': {
       margin: '1rem auto 3.5rem',
       gap: '0.3rem',
-      padding: '0 2rem', // Add padding to prevent buttons from touching screen edges
+      padding: '0 2rem',
     }
   },
   sliderButtonWrapper: {
@@ -2670,116 +3130,6 @@ const styles = {
     '@media (max-width: 480px)': {
       width: '8px',
       height: '8px',
-    }
-  },
-  qrCodeSection: {
-    padding: '2rem 1rem',
-    backgroundColor: '#ffffff',
-    width: '100%',
-    boxSizing: 'border-box',
-    marginBottom: '2rem',
-    '@media (max-width: 768px)': {
-      padding: '1.5rem 0.8rem',
-    },
-    '@media (max-width: 480px)': {
-      padding: '1rem 0.5rem',
-    }
-  },
-  qrCodeContainer: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '2rem',
-    padding: '2rem',
-    backgroundColor: '#f8f9fa',
-    borderRadius: '15px',
-    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)',
-    '@media (max-width: 768px)': {
-      flexDirection: 'column',
-      padding: '1.5rem',
-      gap: '1.5rem',
-    }
-  },
-  qrCodeWrapper: {
-    width: '200px',
-    height: '200px',
-    padding: '1rem',
-    backgroundColor: 'white',
-    borderRadius: '10px',
-    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    '@media (max-width: 768px)': {
-      width: '180px',
-      height: '180px',
-    },
-    '@media (max-width: 480px)': {
-      width: '150px',
-      height: '150px',
-    }
-  },
-  qrCodeImage: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
-  },
-  qrCodeText: {
-    textAlign: 'center',
-    maxWidth: '300px',
-  },
-  qrCodeTitle: {
-    fontSize: '1.8rem',
-    color: '#1e3a8a',
-    marginBottom: '1rem',
-    '@media (max-width: 768px)': {
-      fontSize: '1.5rem',
-    },
-    '@media (max-width: 480px)': {
-      fontSize: '1.3rem',
-    }
-  },
-  qrCodeDescription: {
-    fontSize: '1.1rem',
-    color: '#666',
-    margin: 0,
-    '@media (max-width: 768px)': {
-      fontSize: '1rem',
-    },
-    '@media (max-width: 480px)': {
-      fontSize: '0.9rem',
-    }
-  },
-  scrollingAd: {
-    backgroundColor: '#ffde59',
-    color: '#1e3a8a',
-    padding: '0.5rem 0',
-    overflow: 'hidden',
-    position: 'relative',
-    width: '100%',
-    boxSizing: 'border-box',
-    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-    zIndex: 999,
-  },
-  scrollingAdContent: {
-    width: '100%',
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  scrollingText: {
-    whiteSpace: 'nowrap',
-    fontSize: '1.1rem',
-    fontWeight: 'bold',
-    padding: '0.5rem 0',
-    display: 'inline-block',
-    width: 'auto',
-    '@media (max-width: 768px)': {
-      fontSize: '1rem',
-    },
-    '@media (max-width: 480px)': {
-      fontSize: '0.9rem',
     }
   },
 };
