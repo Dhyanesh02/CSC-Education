@@ -27,7 +27,7 @@ const AdminRegister = () => {
       setIsLoading(true);
       setError('');
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/send-verification`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/verification/send-verification`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
@@ -54,7 +54,7 @@ const AdminRegister = () => {
     setIsLoading(true);
     setError('');
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/verify-code`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/verification/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code: verificationCode }),
@@ -89,7 +89,7 @@ const AdminRegister = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -110,7 +110,7 @@ const AdminRegister = () => {
     setIsLoading(true);
     setError('');
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/send-verification`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/verification/send-verification`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
