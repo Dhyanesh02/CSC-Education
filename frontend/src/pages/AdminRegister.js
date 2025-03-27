@@ -14,6 +14,7 @@ const AdminRegister = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
@@ -27,7 +28,7 @@ const AdminRegister = () => {
       setIsLoading(true);
       setError('');
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/verification/send-verification`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/verification/send-verification`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
@@ -54,7 +55,7 @@ const AdminRegister = () => {
     setIsLoading(true);
     setError('');
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/verification/verify-code`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/verification/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code: verificationCode }),
@@ -89,7 +90,7 @@ const AdminRegister = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/register`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -110,7 +111,7 @@ const AdminRegister = () => {
     setIsLoading(true);
     setError('');
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/verification/send-verification`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/verification/send-verification`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
