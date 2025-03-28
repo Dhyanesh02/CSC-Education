@@ -66,7 +66,7 @@ const AdminLogin = () => {
             Login
           </motion.button>
         </form>
-        <p style={styles.registerText}>
+        {/* <p style={styles.registerText}>
           Don't have an account?{' '}
           <motion.span
             whileHover={{ color: '#ffde59', scale: 1.02 }}
@@ -76,7 +76,7 @@ const AdminLogin = () => {
               Register
             </Link>
           </motion.span>
-        </p>
+        </p> */}
       </motion.div>
     </div>
   );
